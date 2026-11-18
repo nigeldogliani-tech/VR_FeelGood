@@ -51,6 +51,7 @@ public class InteractableObject : XRGrabInteractable
     }
 
 
+
     public void SnapToSlot(Transform snapPoint, Slot slot, SlotType slotType)
     {
         // Empêche de placer un objet déjà attrapé ou placé.
@@ -62,9 +63,11 @@ public class InteractableObject : XRGrabInteractable
         IsSnapped = true;
         currentSlot = slot;
 
-        // Mémorise la position, la rotation et la taille globales.
+        // Mémorise la position et la rotation avant le placement.
         Vector3 savedPosition = transform.position;
-        Vector3 currentEuler = transform.eulerAngles;
+        float savedYRotation = transform.eulerAngles.y;
+
+        // Mémorise la taille globale de l'objet.
         Vector3 savedScale = transform.lossyScale;
 
         // Arrête les mouvements physiques.
@@ -76,43 +79,76 @@ public class InteractableObject : XRGrabInteractable
 
         // Attache l'objet au SnapPoint.
         transform.SetParent(snapPoint, true);
+
+
         if (slotType == SlotType.FreePlacement)
         {
-            // Conserve la position de dépôt.
-            transform.position = savedPosition;
+            transform.position = new Vector3(
+                savedPosition.x,
+                snapPoint.position.y,
+                savedPosition.z
+            );
 
-            // Conserve uniquement la rotation horizontale.
+            // Conserve la rotation horizontale du joueur.
             transform.rotation = Quaternion.Euler(
                 0f,
-                currentEuler.y,
+                savedYRotation,
                 0f
             );
         }
+
         else if (slotType == SlotType.FixedPlacement)
         {
-            // Aligne l'objet sur la rotation du SnapPoint.
+            // Aligne l'objet sur le SnapPoint.
+            transform.position = snapPoint.position;
             transform.rotation = snapPoint.rotation;
-
-            // Récupère les dimensions du collider.
-            Collider objectCollider = GetComponentInChildren<Collider>();
-
-            if (objectCollider != null)
-            {
-                // Calcule la hauteur de l'objet.
-                float objectHeight = objectCollider.bounds.size.y;
-
-                // Remonte le pivot de la moitié de la hauteur.
-                transform.position = snapPoint.position
-                                   + Vector3.up * (objectHeight / 2f);
-            }
-            else
-            {
-                // Si aucun collider n'est trouvé.
-                transform.position = snapPoint.position;
-            }
         }
+
         Vector3 parentScale = snapPoint.lossyScale;
 
-        transform.localScale = new Vector3(savedScale.x / parentScale.x,savedScale.y / parentScale.y,savedScale.z / parentScale.z);
+        // Évite une division par zéro.
+        if (Mathf.Abs(parentScale.x) < 0.0001f ||
+            Mathf.Abs(parentScale.y) < 0.0001f ||
+            Mathf.Abs(parentScale.z) < 0.0001f)
+        {
+            Debug.LogWarning("Le SnapPoint possède une échelle nulle.");
+            return;
+        }
+
+        transform.localScale = new Vector3(
+            savedScale.x / parentScale.x,
+            savedScale.y / parentScale.y,
+            savedScale.z / parentScale.z
+        );
+
+        // Actualise les positions des Colliders.
+        Physics.SyncTransforms();
+
+        // Récupère tous les Colliders de l'objet et de ses enfants.
+        Collider[] objectColliders = GetComponentsInChildren<Collider>();
+
+        // Recherche le point le plus bas de l'objet.
+        float lowestPoint = float.PositiveInfinity;
+
+        foreach (Collider objectCollider in objectColliders)
+        {
+            if (!objectCollider.enabled)
+            {
+                continue;
+            }
+
+            lowestPoint = Mathf.Min(
+                lowestPoint,
+                objectCollider.bounds.min.y
+            );
+        }
+
+        // Si un Collider existe, pose sa base sur la surface.
+        if (!float.IsPositiveInfinity(lowestPoint))
+        {
+            float heightCorrection = snapPoint.position.y - lowestPoint;
+
+            transform.position += Vector3.up * heightCorrection;
+        }
     }
 }
