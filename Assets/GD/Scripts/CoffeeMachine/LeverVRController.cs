@@ -13,6 +13,8 @@ public class LeverVRController : MonoBehaviour
     public float motorForce = 100f;
     public float rotationSpeed = 8f;
 
+    [Range(0.1f, 1f)]
+    public float sensitivity = 0.4f;
     private IXRSelectInteractor currentInteractor;
 
     private Vector3 initialHandDirection;
@@ -98,7 +100,7 @@ public class LeverVRController : MonoBehaviour
             axis
         );
 
-        float targetAngle = initialLeverAngle + handAngle;
+        float targetAngle = initialLeverAngle + handAngle * sensitivity;
 
         if (!IsFinite(targetAngle) || !IsFinite(hinge.angle))
             return;
