@@ -4,6 +4,7 @@ using System.Collections;
 public class DayTimer : MonoBehaviour
 {
     [SerializeField] private float dayDuration = 120f;
+    [SerializeField] private CustomerManager customerManager;
 
     private void Start()
     {
@@ -14,6 +15,8 @@ public class DayTimer : MonoBehaviour
     {
         Debug.Log("Début de la journée !");
 
+        customerManager.StartDay();
+
         yield return new WaitForSeconds(dayDuration);
 
         EndDay();
@@ -22,5 +25,7 @@ public class DayTimer : MonoBehaviour
     void EndDay()
     {
         Debug.Log("Fin de la journée !");
+
+        customerManager.EndDay();
     }
 }

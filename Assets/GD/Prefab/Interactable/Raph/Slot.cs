@@ -16,11 +16,16 @@ public class Slot : MonoBehaviour
 
     private InteractableObject currentObject;
 
+    [Header("Delivery Settings")]
+    [SerializeField] private bool isDeliverySlot;
+
+    [SerializeField]
+    private CustomerManager customerManager;
+
 
     private void OnTriggerStay(Collider other)
     {
-        InteractableObject obj =
-            other.GetComponentInParent<InteractableObject>();
+        InteractableObject obj = other.GetComponentInParent<InteractableObject>();
 
         if (obj == null)
         {
@@ -58,10 +63,14 @@ public class Slot : MonoBehaviour
             return false;
         }
 
-        // Vérifie l'ID uniquement si un ID est renseigné.
-        // Un champ vide accepte tous les objets.
-        if (!string.IsNullOrEmpty(acceptedItemID)
-            && obj.itemID != acceptedItemID)
+        // Vérifie l'ID si renseigné(rien = libre)
+        if (!string.IsNullOrEmpty(acceptedItemID) && obj.itemID != acceptedItemID)
+        {
+            return false;
+        }
+
+        // sp bar acceptent que final drink
+        if (isDeliverySlot && !obj.isFinalDrink)
         {
             return false;
         }
@@ -77,7 +86,17 @@ public class Slot : MonoBehaviour
 
         // Mémorise l'objet placé.
         currentObject = obj;
-
+        
+        //verification que sur slot du bar 
+        if (isDeliverySlot)
+        {
+            if (customerManager == null)
+            {
+                Debug.LogWarning("pas de customer manager sur les slots");
+                return true;
+            }
+            customerManager.TryValidateOrder(obj.itemID);//quand boisson posée sur bar = manager vérifie si id correspond a une demande actuelle
+        }
         return true;
     }
 

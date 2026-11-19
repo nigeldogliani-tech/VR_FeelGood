@@ -5,6 +5,7 @@ public class InteractableObject : XRGrabInteractable
 {
     [Header("Object Settings")]
     public string itemID;
+    public bool isFinalDrink;
 
     public bool IsGrabbed => isSelected;
     public bool IsSnapped { get; private set; }
