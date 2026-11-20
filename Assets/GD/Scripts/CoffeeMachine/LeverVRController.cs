@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
@@ -8,19 +7,17 @@ public class LeverVRController : MonoBehaviour
 
     public XRGrabInteractable grab;
     public HingeJoint hinge;
+    public Rigidbody rb;
 
-    [Header("Settings")]
-    public float motorForce = 100f;
-    public float rotationSpeed = 8f;
+    [Header("Grab Line")]
+    public Transform rodStart;
+    public Transform rodEnd;
 
-    [Range(0.1f, 1f)]
-    public float sensitivity = 0.4f;
-    private IXRSelectInteractor currentInteractor;
+    private IXRSelectInteractor interactor;
 
-    private Vector3 initialHandDirection;
-    private float initialLeverAngle;
-
-    private bool validGrab = false;
+    private Vector3 initialGrabDirection;
+    private Quaternion initialLeverRotation;
+    private float initialHingeAngle;
 
     void Awake()
     {
@@ -30,114 +27,91 @@ public class LeverVRController : MonoBehaviour
         if (hinge == null)
             hinge = GetComponent<HingeJoint>();
 
+        if (rb == null)
+            rb = GetComponent<Rigidbody>();
+
         grab.selectEntered.AddListener(OnGrab);
         grab.selectExited.AddListener(OnRelease);
     }
 
-    bool IsFinite(Vector3 v)
-    {
-        return IsFinite(v.x) &&
-               IsFinite(v.y) &&
-               IsFinite(v.z);
-    }
-
-    bool IsFinite(float v)
-    {
-        return !float.IsNaN(v) && !float.IsInfinity(v);
-    }
-
     void OnGrab(SelectEnterEventArgs args)
     {
-        currentInteractor = args.interactorObject;
+        interactor = args.interactorObject;
 
-        hinge.useSpring = false;
-        hinge.useMotor = false;
-
-        Transform hand = currentInteractor.GetAttachTransform(grab);
+        Transform hand = interactor.GetAttachTransform(grab);
+        initialHingeAngle = hinge.angle;
 
         Vector3 axis = transform.TransformDirection(hinge.axis).normalized;
         Vector3 pivot = transform.TransformPoint(hinge.anchor);
 
-        Vector3 direction = Vector3.ProjectOnPlane(
-            hand.position - pivot, axis
-        );
+        // Ligne de la tige
+        Vector3 rod = rodEnd.position - rodStart.position;
 
-        // Evite les vecteurs nuls ou invalides
-        if (!IsFinite(direction) || direction.sqrMagnitude < 0.0001f)
-        {
-            validGrab = false;
-            return;
-        }
+        // Point le plus proche sur la ligne
+        float t = Vector3.Dot(hand.position - rodStart.position, rod)
+                  / rod.sqrMagnitude;
 
-        initialHandDirection = direction.normalized;
-        initialLeverAngle = hinge.angle;
+        t = Mathf.Clamp01(t);
 
-        validGrab = true;
+        Vector3 closestPoint = rodStart.position + t * rod;
+
+        // Direction du point de grab depuis le pivot
+        initialGrabDirection = Vector3.ProjectOnPlane(
+        hand.position - pivot, axis
+        ).normalized;
+
+        initialLeverRotation = rb.rotation;
+        initialHingeAngle = hinge.angle;
     }
 
     void FixedUpdate()
     {
-        if (currentInteractor == null || !validGrab)
+        if (interactor == null)
             return;
 
-        Transform hand = currentInteractor.GetAttachTransform(grab);
+        Transform hand = interactor.GetAttachTransform(grab);
 
         Vector3 axis = transform.TransformDirection(hinge.axis).normalized;
         Vector3 pivot = transform.TransformPoint(hinge.anchor);
 
-        Vector3 direction = Vector3.ProjectOnPlane(
+        // Direction actuelle entre pivot et main
+        Vector3 currentDirection = Vector3.ProjectOnPlane(
             hand.position - pivot, axis
-        );
+        ).normalized;
 
-        if (!IsFinite(direction) || direction.sqrMagnitude < 0.0001f)
-            return;
-
-        Vector3 currentDirection = direction.normalized;
-
-        float handAngle = Vector3.SignedAngle(
-            initialHandDirection,
+        // Angle parcouru par la main
+        float deltaAngle = Vector3.SignedAngle(
+            initialGrabDirection,
             currentDirection,
             axis
         );
 
-        float targetAngle = initialLeverAngle + handAngle * sensitivity;
+        // Angle désiré
+        float targetAngle = initialHingeAngle + deltaAngle;
 
-        if (!IsFinite(targetAngle) || !IsFinite(hinge.angle))
-            return;
+        // Respect des limites
+        if (hinge.useLimits)
+        {
+            targetAngle = Mathf.Clamp(
+                targetAngle,
+                hinge.limits.min,
+                hinge.limits.max
+            );
+        }
 
-        JointLimits limits = hinge.limits;
+        float appliedAngle = targetAngle - initialHingeAngle;
 
-        targetAngle = Mathf.Clamp(
-            targetAngle,
-            limits.min,
-            limits.max
-        );
+        // Rotation autour de l'axe du Hinge
+        Quaternion targetRotation =
+            Quaternion.AngleAxis(appliedAngle, axis)
+            * initialLeverRotation;
 
-        float error = targetAngle - hinge.angle;
-
-        JointMotor motor = hinge.motor;
-
-        motor.force = motorForce;
-        motor.targetVelocity = Mathf.Clamp(
-            error * rotationSpeed,
-            -100f,
-            100f
-        );
-
-        if (!IsFinite(motor.targetVelocity))
-            return;
-
-        hinge.motor = motor;
-        hinge.useMotor = true;
+        rb.MoveRotation(targetRotation);
     }
 
     void OnRelease(SelectExitEventArgs args)
     {
-        currentInteractor = null;
-        validGrab = false;
-
-        hinge.useMotor = false;
-        hinge.useSpring = true;
+        interactor = null;
     }
 
     void OnDestroy()
