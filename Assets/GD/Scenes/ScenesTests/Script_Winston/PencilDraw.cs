@@ -13,8 +13,10 @@ public class PencilDraw : MonoBehaviour
         if (other.CompareTag("DrawSurface"))
         {
             GameObject newLine = new GameObject("PencilStroke");
+            newLine.transform.SetParent(other.transform);
 
             currentLine = newLine.AddComponent<LineRenderer>();
+            currentLine.useWorldSpace = false;
 
             currentLine.startWidth = lineWidth;
             currentLine.endWidth = lineWidth;
@@ -36,9 +38,9 @@ public class PencilDraw : MonoBehaviour
             currentLine.positionCount++;
 
             currentLine.SetPosition(
-                currentLine.positionCount - 1,
-                transform.position
-            );
+    currentLine.positionCount - 1,
+    other.transform.InverseTransformPoint(transform.position)
+);
         }
     }
 
