@@ -8,6 +8,7 @@ public enum SlotType
 
 public class Slot : MonoBehaviour
 {
+    [SerializeField] private MakeCoffee makeCoffee;
     [Header("Slot Settings")]
     public SlotType slotType;
 
@@ -92,6 +93,7 @@ public class Slot : MonoBehaviour
 
         // Mémorise l'objet placé.
         currentObject = obj;
+        makeCoffee.cupIsPlaced = true;
         return true;
     }
 
@@ -144,6 +146,7 @@ public class Slot : MonoBehaviour
     {
         if (currentObject == obj)
         {
+            makeCoffee.cupIsPlaced = false;
             currentObject = null;
         }
     }

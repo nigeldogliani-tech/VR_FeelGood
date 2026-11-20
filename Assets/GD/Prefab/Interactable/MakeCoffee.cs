@@ -3,6 +3,7 @@ using UnityEngine;
 public class MakeCoffee : MonoBehaviour
 {
     private bool isInPlaced = false;
+    public bool cupIsPlaced = false;
 
     public void placedEnable()
     {
@@ -17,7 +18,7 @@ public class MakeCoffee : MonoBehaviour
     }
     public void startMachine()
     {
-        if(isInPlaced == true)
+        if(isInPlaced == true && cupIsPlaced == true)
         {
             Debug.Log("is Start");
         }
