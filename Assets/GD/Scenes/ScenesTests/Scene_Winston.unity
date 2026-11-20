@@ -2539,8 +2539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8402d25e5c834521be225ccc94712f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PencilDraw
-  lineWidth: 0.01
-  pencilColor: {r: 0, g: 0, b: 0, a: 1}
+  rayDistance: 0.1
 --- !u!20 &1360650847 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 657184242118504724, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
@@ -3509,9 +3508,10 @@ GameObject:
   - component: {fileID: 1827906784}
   - component: {fileID: 1827906783}
   - component: {fileID: 1827906782}
-  - component: {fileID: 1827906781}
   - component: {fileID: 1827906786}
   - component: {fileID: 1827906785}
+  - component: {fileID: 1827906787}
+  - component: {fileID: 1827906788}
   m_Layer: 0
   m_Name: Cup (Main Menu)
   m_TagString: DrawSurface
@@ -3519,27 +3519,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!65 &1827906781
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1827906780}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1827906782
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3565,7 +3544,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e4108db5c9d9e4366b8df5acdf497294, type: 2}
+  - {fileID: 2100000, guid: 266c988096ac3490f95fd6635c58a53a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3772,6 +3751,43 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!64 &1827906787
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827906780}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1827906788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827906780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1d4d22bf2af64982967179f67435fad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CubeTexturePainter
+  textureSize: 1024
+  brushSize: 8
+  brushColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &1859245736
 GameObject:
   m_ObjectHideFlags: 0
