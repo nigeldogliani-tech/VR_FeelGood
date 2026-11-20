@@ -87,31 +87,58 @@ public class Slot : MonoBehaviour
         // Mémorise l'objet placé.
         currentObject = obj;
 
-        //verification que sur slot du bar 
-        if (isDeliverySlot)
-        {
-            if (customerManager == null)
-            {
-                Debug.LogWarning("Pas de CustomerManager sur Slot");
-                return true;
-            }
+        // Place l'objet selon le type de Slot.
+        obj.SnapToSlot(snapPoint, this, slotType);
 
-            bool orderValidated = customerManager.TryValidateOrder(obj.itemID);
-
-            if (orderValidated)
-            {
-                Debug.Log("Boisson consommée : " + obj.itemID);
-
-                // free slot 
-                ClearSlot(obj);
-
-                //bye bye commande
-                Destroy(obj.gameObject);
-            }
-        }
+        // Mémorise l'objet placé.
+        currentObject = obj;
         return true;
     }
 
+    public bool ValidateCurrentOrder()
+    {
+        //c'est delivery slot? 
+        if (!isDeliverySlot)
+        {
+            Debug.LogWarning("po delivery slot!");
+            return false;
+        }
+
+        // y'a une boisson ouuu? 
+        if (currentObject == null)
+        {
+            Debug.Log("po de boisson !");
+            return false;
+        }
+
+        //est ce que ya un customer manager? 
+        if (customerManager == null)
+        {
+            Debug.LogWarning("po de cm !");
+            return false;
+        }
+
+        //essaye de valider 
+        bool orderValidated = customerManager.TryValidateOrder(currentObject.itemID);
+
+        if (!orderValidated)
+        {
+            Debug.Log("personne veut de toi");
+            return false;
+        }
+
+        Debug.Log("Boisson consommée : " + currentObject.itemID);
+
+        //memorise boisson avant de free slot 
+        InteractableObject deliveredObject = currentObject;
+
+        ClearSlot(deliveredObject);
+
+        //bye bye boisson
+        Destroy(deliveredObject.gameObject);
+
+        return true;
+    }
 
     public void ClearSlot(InteractableObject obj)
     {
