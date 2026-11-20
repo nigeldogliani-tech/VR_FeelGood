@@ -13,7 +13,10 @@ public class PencilDraw : MonoBehaviour
         if (other.CompareTag("DrawSurface"))
         {
             GameObject newLine = new GameObject("PencilStroke");
-            newLine.transform.SetParent(other.transform);
+            newLine.transform.SetParent(other.transform, false);
+            newLine.transform.localPosition = Vector3.zero;
+            newLine.transform.localRotation = Quaternion.identity;
+            newLine.transform.localScale = Vector3.one;
 
             currentLine = newLine.AddComponent<LineRenderer>();
             currentLine.useWorldSpace = false;
