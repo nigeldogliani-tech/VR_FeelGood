@@ -191,8 +191,8 @@ GameObject:
   - component: {fileID: 6097401271380328376}
   - component: {fileID: 5362223054091158006}
   - component: {fileID: 4551713715099589024}
-  - component: {fileID: 1887256137027903476}
   - component: {fileID: 5465538232107948494}
+  - component: {fileID: 5339068769052140702}
   m_Layer: 0
   m_Name: pivotGrinder
   m_TagString: Untagged
@@ -496,20 +496,6 @@ MonoBehaviour:
   m_MaxAngularVelocityDelta: 20
   itemID: 
   isFinalDrink: 0
---- !u!114 &1887256137027903476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8843956500711975914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f90666f64b4530848a97e1101ff40469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LeverScript
-  leverJoint: {fileID: 5362223054091158006}
-  activationAngle: 35
 --- !u!114 &5465538232107948494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,3 +511,18 @@ MonoBehaviour:
   grab: {fileID: 4551713715099589024}
   hinge: {fileID: 5362223054091158006}
   rb: {fileID: 6097401271380328376}
+--- !u!114 &5339068769052140702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8843956500711975914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 966e195bdf69b3e448d80a111e1a6245, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CrankScript
+  CrankJoint: {fileID: 5362223054091158006}
+  activationAngle: 350
+  MakeCoffee: {fileID: 0}
