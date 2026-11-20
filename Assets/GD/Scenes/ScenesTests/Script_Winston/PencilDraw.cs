@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PencilDraw : MonoBehaviour
 {
-    public float rayDistance = 0.1f;
+    public float rayDistance = 0.2f;
 
     private CubeTexturePainter currentPainter;
 
@@ -23,6 +23,9 @@ public class PencilDraw : MonoBehaviour
 
             if (painter != null)
             {
+                Debug.Log("Hit: " + hit.collider.name);
+                Debug.Log("UV: " + hit.textureCoord);
+
                 painter.PaintAt(hit.textureCoord);
             }
         }
