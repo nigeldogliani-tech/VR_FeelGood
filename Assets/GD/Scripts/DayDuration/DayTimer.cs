@@ -8,21 +8,36 @@ public class DayTimer : MonoBehaviour
 
     private void Start()
     {
+        if (customerManager == null)
+        {
+            Debug.LogError("CustomerManager non assigné au DayTimer !");
+            return;
+        }
+
         StartCoroutine(DayCountdown());
     }
 
-    IEnumerator DayCountdown()
+    private IEnumerator DayCountdown()
     {
         Debug.Log("Début de la journée !");
 
         customerManager.StartDay();
 
-        yield return new WaitForSeconds(dayDuration);
+        float elapsedTime = 0f;
+
+        // Attend que tous les clients soient servis
+        // OU que la durée maximale soit atteinte.
+        while (elapsedTime < dayDuration && !customerManager.IsDayComplete)
+        {
+            yield return null;
+
+            elapsedTime += Time.unscaledDeltaTime;
+        }
 
         EndDay();
     }
 
-    void EndDay()
+    private void EndDay()
     {
         Debug.Log("Fin de la journée !");
 

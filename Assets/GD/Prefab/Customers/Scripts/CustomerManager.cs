@@ -13,7 +13,8 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private int maxCustomers = 12;
 
 
-    [SerializeField] private float spawnInterval = 8f;
+    [SerializeField] private float spawnCheckInterval = 0.25f;
+    [SerializeField] private float spawnInterval = 2f;
 
     [Header("Available Drinks")]
     [SerializeField]
@@ -34,6 +35,12 @@ public class CustomerManager : MonoBehaviour
     private int nextOrderID = 1;
 
     private bool dayActive;
+
+    private string lastDrinkID = "";
+    private int consecutiveDrinkCount = 0;
+    private const int maxConsecutiveDrinks = 3;
+
+    public bool IsDayComplete => spawnedCustomers >= totalCustomersToday && activeCustomers.Count == 0;
 
     private void Awake()
     {
@@ -57,6 +64,9 @@ public class CustomerManager : MonoBehaviour
         totalCustomersToday = Random.Range(minCustomers,maxCustomers + 1);
 
         spawnedCustomers = 0;
+        lastDrinkID = "";
+
+        consecutiveDrinkCount = 0;//réinitialise compteurs boissons 
 
         Debug.Log("Nb clients 2day : " + totalCustomersToday);
 
@@ -69,24 +79,37 @@ public class CustomerManager : MonoBehaviour
 
         StopAllCoroutines();
 
-        Debug.Log("Fin clients.");
+        Debug.Log("Fin de journée : arrêt des apparitions de clients.");
     }
 
     //apparitions
+
+
+
     private IEnumerator SpawnCustomersRoutine()
     {
         while (spawnedCustomers < totalCustomersToday && dayActive)
         {
-            yield return new WaitForSeconds(spawnInterval);
-
-            if (!dayActive)
+            if (GetFreeSpawnPoint() != -1)
             {
-                yield break;
-            }
+                TrySpawnCustomer();
 
-            TrySpawnCustomer();
+                // Attend avant de faire apparaître un autre client.
+                yield return new WaitForSeconds(spawnInterval);
+            }
+            else
+            {
+                // Aucun SpawnPoint libre :
+                // on vérifie régulièrement si un client est parti.
+                yield return new WaitForSeconds(spawnCheckInterval);
+            }
         }
+
+        Debug.Log("Tous les clients prévus ont été créés.");
     }
+
+
+
 
     //svp apparaissez
     private void TrySpawnCustomer()
@@ -106,7 +129,12 @@ public class CustomerManager : MonoBehaviour
             return;
         }
 
-        string randomDrink = availableDrinks[Random.Range(0, availableDrinks.Length)];// alea boisson
+        string randomDrink = ChooseRandomDrink();// alea boisson
+
+        if (randomDrink == null)
+        {
+            return;
+        }
 
         Transform spawnPoint = spawnPoints[availablePoint];
 
@@ -125,6 +153,7 @@ public class CustomerManager : MonoBehaviour
         nextOrderID++;
 
         customer.Initialize(randomDrink,orderID,this,availablePoint);
+        RegisterDrink(randomDrink);
 
         occupiedSpawnPoints[availablePoint] = true;
 
@@ -133,6 +162,63 @@ public class CustomerManager : MonoBehaviour
         spawnedCustomers++;
 
         Debug.Log("Nouveau client : " + orderID +" | Boisson : " + randomDrink);
+    }
+
+    private string ChooseRandomDrink()
+    {
+        List<string> possibleDrinks = new List<string>();
+
+        // on regarde toutes boissons dispo
+        foreach (string drink in availableDrinks)
+        {
+            if (string.IsNullOrEmpty(drink))
+            {
+                continue;
+            }
+
+            //si 3x même boisson= on exclut la dernière boisson tirée 
+            if (consecutiveDrinkCount >= maxConsecutiveDrinks && drink == lastDrinkID)
+            {
+                continue;
+            }
+
+            possibleDrinks.Add(drink);
+        }
+
+        //si aucune boisson dispo = autre tirage 
+        if (possibleDrinks.Count == 0)
+        {
+            Debug.LogWarning("Impossible de varier les boissons : aucune alternative disponible.");
+
+            foreach (string drink in availableDrinks)
+            {
+                if (!string.IsNullOrEmpty(drink))
+                {
+                    possibleDrinks.Add(drink);
+                }
+            }
+        }
+
+        if (possibleDrinks.Count == 0)
+        {
+            Debug.LogError("Aucune boisson disponible dans Available Drinks !");
+            return null;
+        }
+
+        return possibleDrinks[Random.Range(0, possibleDrinks.Count)];
+    }
+
+    private void RegisterDrink(string drinkID)//compteur à jour après chaque clients 
+    {
+        if (drinkID == lastDrinkID)
+        {
+            consecutiveDrinkCount++;
+        }
+        else
+        {
+            lastDrinkID = drinkID;
+            consecutiveDrinkCount = 1;
+        }
     }
 
     // quel SP est libre??

@@ -84,18 +84,10 @@ public class InteractableObject : XRGrabInteractable
 
         if (slotType == SlotType.FreePlacement)
         {
-            transform.position = new Vector3(
-                savedPosition.x,
-                snapPoint.position.y,
-                savedPosition.z
-            );
+            transform.position = new Vector3(savedPosition.x,snapPoint.position.y,savedPosition.z);
 
             // Conserve la rotation horizontale du joueur.
-            transform.rotation = Quaternion.Euler(
-                0f,
-                savedYRotation,
-                0f
-            );
+            transform.rotation = Quaternion.Euler(0f, savedYRotation,0f);
         }
 
         else if (slotType == SlotType.FixedPlacement)
@@ -108,19 +100,13 @@ public class InteractableObject : XRGrabInteractable
         Vector3 parentScale = snapPoint.lossyScale;
 
         // Évite une division par zéro.
-        if (Mathf.Abs(parentScale.x) < 0.0001f ||
-            Mathf.Abs(parentScale.y) < 0.0001f ||
-            Mathf.Abs(parentScale.z) < 0.0001f)
+        if (Mathf.Abs(parentScale.x) < 0.0001f ||Mathf.Abs(parentScale.y) < 0.0001f ||Mathf.Abs(parentScale.z) < 0.0001f)
         {
             Debug.LogWarning("Le SnapPoint possède une échelle nulle.");
             return;
         }
 
-        transform.localScale = new Vector3(
-            savedScale.x / parentScale.x,
-            savedScale.y / parentScale.y,
-            savedScale.z / parentScale.z
-        );
+        transform.localScale = new Vector3(savedScale.x / parentScale.x,savedScale.y / parentScale.y,savedScale.z / parentScale.z );
 
         // Actualise les positions des Colliders.
         Physics.SyncTransforms();
@@ -138,10 +124,7 @@ public class InteractableObject : XRGrabInteractable
                 continue;
             }
 
-            lowestPoint = Mathf.Min(
-                lowestPoint,
-                objectCollider.bounds.min.y
-            );
+            lowestPoint = Mathf.Min(lowestPoint,objectCollider.bounds.min.y);
         }
 
         // Si un Collider existe, pose sa base sur la surface.

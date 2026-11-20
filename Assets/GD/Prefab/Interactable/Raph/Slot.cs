@@ -86,16 +86,28 @@ public class Slot : MonoBehaviour
 
         // Mémorise l'objet placé.
         currentObject = obj;
-        
+
         //verification que sur slot du bar 
         if (isDeliverySlot)
         {
             if (customerManager == null)
             {
-                Debug.LogWarning("pas de customer manager sur les slots");
+                Debug.LogWarning("Pas de CustomerManager sur Slot");
                 return true;
             }
-            customerManager.TryValidateOrder(obj.itemID);//quand boisson posée sur bar = manager vérifie si id correspond a une demande actuelle
+
+            bool orderValidated = customerManager.TryValidateOrder(obj.itemID);
+
+            if (orderValidated)
+            {
+                Debug.Log("Boisson consommée : " + obj.itemID);
+
+                // free slot 
+                ClearSlot(obj);
+
+                //bye bye commande
+                Destroy(obj.gameObject);
+            }
         }
         return true;
     }
