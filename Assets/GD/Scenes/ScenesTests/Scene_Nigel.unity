@@ -427,6 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MakeCoffee
   cupIsPlaced: 0
+  crankScript: {fileID: 0}
 --- !u!1 &207940844
 GameObject:
   m_ObjectHideFlags: 0
@@ -2290,6 +2291,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401230349}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1490901167 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+  m_PrefabInstance: {fileID: 1638486613}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1490901168 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5339068769052140702, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+  m_PrefabInstance: {fileID: 1638486613}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 966e195bdf69b3e448d80a111e1a6245, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CrankScript
 --- !u!1 &1522315103
 GameObject:
   m_ObjectHideFlags: 0
@@ -2432,6 +2449,7 @@ Transform:
   - {fileID: 1568988755}
   - {fileID: 2064110504}
   - {fileID: 207940845}
+  - {fileID: 1490901167}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1568988754
@@ -2577,6 +2595,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1142475241}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1001 &1638486613
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1522315108}
+    m_Modifications:
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.53597176
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.018999875
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.81199944
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.9520001
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938887235619922791, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5339068769052140702, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: MakeCoffee
+      value: 
+      objectReference: {fileID: 2064110509}
+    - target: {fileID: 8843956500711975914, guid: 31094f950232c584998d232d7743dcd8, type: 3}
+      propertyPath: m_Name
+      value: pivotGrinder
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 31094f950232c584998d232d7743dcd8, type: 3}
 --- !u!1 &1685070452
 GameObject:
   m_ObjectHideFlags: 0
@@ -3920,6 +4011,7 @@ GameObject:
   - component: {fileID: 2064110507}
   - component: {fileID: 2064110506}
   - component: {fileID: 2064110505}
+  - component: {fileID: 2064110509}
   m_Layer: 0
   m_Name: lockage(1)
   m_TagString: Untagged
@@ -3974,10 +4066,34 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2064110509}
+        m_TargetAssemblyTypeName: MakeCoffee, Assembly-CSharp
+        m_MethodName: placedEnable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2064110509}
+        m_TargetAssemblyTypeName: MakeCoffee, Assembly-CSharp
+        m_MethodName: placedDisable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_ShowInteractableHoverMeshes: 0
@@ -4069,6 +4185,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064110503}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2064110509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064110503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9e38bb9f491497429c59d89a943b437, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeCoffee
+  cupIsPlaced: 0
+  crankScript: {fileID: 1490901168}
 --- !u!1 &2064988832
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,9 +4,10 @@ public class CrankScript : MonoBehaviour
 {
     public HingeJoint CrankJoint;
     public float activationAngle = 350f;
-    
+    [SerializeField] private MakeCoffee MakeCoffee;
+    public float turns;
 
-   
+
 
     void Update()
     {
@@ -18,6 +19,12 @@ public class CrankScript : MonoBehaviour
             
             Debug.Log("Crank");
             activationAngle = 0f;
+            turns = turns+1;
+            MakeCoffee.startGrind();
+            if (turns >= 3)
+            {
+                turns = 0f;
+            }
         }
 
        

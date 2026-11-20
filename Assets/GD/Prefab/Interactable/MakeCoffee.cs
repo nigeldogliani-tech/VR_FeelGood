@@ -4,6 +4,7 @@ public class MakeCoffee : MonoBehaviour
 {
     private bool isInPlaced = false;
     public bool cupIsPlaced = false;
+    [SerializeField] private CrankScript crankScript;
 
     public void placedEnable()
     {
@@ -18,9 +19,30 @@ public class MakeCoffee : MonoBehaviour
     }
     public void startMachine()
     {
-        if(isInPlaced == true && cupIsPlaced == true)
+        if(isInPlaced)
         {
-            Debug.Log("is Start");
+            if (cupIsPlaced == true)
+            {
+                Debug.Log("is Start");
+            }
+        }
+    }
+    public void startGrind()
+    {
+        if (isInPlaced)
+        {
+            if (crankScript.turns == 1)
+            {
+                Debug.Log("is Start in 1");
+            }
+            else if (crankScript.turns == 2)
+            {
+                Debug.Log("is Start in 2");
+            }
+            else if (crankScript.turns == 3)
+            {
+                Debug.Log("is Start in 3");
+            }
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
