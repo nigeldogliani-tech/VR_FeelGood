@@ -12,12 +12,14 @@ public class OptionsMenu : MonoBehaviour
 
     public void ChangeMasterVolume()
     {
-        MainAudioMixer.SetFloat("MasterVol", masterVol.value);           
+        float volume = masterVol.value;
+        MainAudioMixer.SetFloat("MasterVol",Mathf.Log10(Mathf.Max(volume, 0.0001f)) * 20f);
     }
 
     public void ChangeMusicVolume()
     {
-        MainAudioMixer.SetFloat("MusicVol", musicVol.value);           
+        float volume = musicVol.value;
+        MainAudioMixer.SetFloat("MusicVol",Mathf.Log10(Mathf.Max(volume, 0.0001f)) * 20f);
     }
 
 
