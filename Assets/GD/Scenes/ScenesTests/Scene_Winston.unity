@@ -248,19 +248,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 30525052}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1664698511}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: PlayGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &30525052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,6 +302,22 @@ MonoBehaviour:
   audioSource: {fileID: 1900713371}
   hoverSound: {fileID: 8300000, guid: eeeda5dce5e1d344f8e2f6195f16cb38, type: 3}
   clickSound: {fileID: 8300000, guid: fd5bc78ec087b92418e0181ca35eca24, type: 3}
+  button: {fileID: 30525051}
+  actionAfterSound:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1664698511}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: PlayGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &242654954
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,7 +327,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 242654955}
-  - component: {fileID: 242654956}
   m_Layer: 0
   m_Name: Option Panel
   m_TagString: Untagged
@@ -352,23 +355,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &242654956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 242654954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8406ebd60e17f479e92b7a6ff3dd6467, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OptionsMenu
-  mainMenuPanel: {fileID: 1105403386}
-  optionPanel: {fileID: 242654954}
-  masterVol: {fileID: 832239505}
-  musicVol: {fileID: 863750933}
-  MainAudioMixer: {fileID: 24100000, guid: 01e4ef20bf0644eedb6014982b51e0b0, type: 2}
 --- !u!1 &273664284
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,19 +679,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 422094828}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1664698511}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: OpenCredits
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &422094828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -759,6 +733,22 @@ MonoBehaviour:
   audioSource: {fileID: 1900713371}
   hoverSound: {fileID: 8300000, guid: eeeda5dce5e1d344f8e2f6195f16cb38, type: 3}
   clickSound: {fileID: 8300000, guid: fd5bc78ec087b92418e0181ca35eca24, type: 3}
+  button: {fileID: 422094827}
+  actionAfterSound:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1664698511}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: OpenCredits
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &460579189
 GameObject:
   m_ObjectHideFlags: 0
@@ -1426,7 +1416,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -1524,19 +1514,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 834480817}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1664698511}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: BackToMainMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &834480817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1590,6 +1568,22 @@ MonoBehaviour:
   audioSource: {fileID: 1900713371}
   hoverSound: {fileID: 8300000, guid: eeeda5dce5e1d344f8e2f6195f16cb38, type: 3}
   clickSound: {fileID: 8300000, guid: fd5bc78ec087b92418e0181ca35eca24, type: 3}
+  button: {fileID: 834480816}
+  actionAfterSound:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1664698511}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: BackToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &863750931
 GameObject:
   m_ObjectHideFlags: 0
@@ -1676,7 +1670,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -2191,19 +2185,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1119743344}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1104743246}
-        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
-        m_MethodName: CloseOptions
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1119743344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2257,6 +2239,22 @@ MonoBehaviour:
   audioSource: {fileID: 1900713371}
   hoverSound: {fileID: 8300000, guid: eeeda5dce5e1d344f8e2f6195f16cb38, type: 3}
   clickSound: {fileID: 8300000, guid: fd5bc78ec087b92418e0181ca35eca24, type: 3}
+  button: {fileID: 1119743343}
+  actionAfterSound:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1664698513}
+        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
+        m_MethodName: CloseOptions
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1134266093
 GameObject:
   m_ObjectHideFlags: 0
@@ -2670,19 +2668,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1446074767}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1104743246}
-        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
-        m_MethodName: OpenOptions
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1446074767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2736,6 +2722,22 @@ MonoBehaviour:
   audioSource: {fileID: 1900713371}
   hoverSound: {fileID: 8300000, guid: eeeda5dce5e1d344f8e2f6195f16cb38, type: 3}
   clickSound: {fileID: 8300000, guid: fd5bc78ec087b92418e0181ca35eca24, type: 3}
+  button: {fileID: 1446074766}
+  actionAfterSound:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1664698513}
+        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
+        m_MethodName: OpenOptions
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1510136929
 GameObject:
   m_ObjectHideFlags: 0
@@ -2808,8 +2810,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4284113251
-  m_fontColor: {r: 0.38823533, g: 0.3803922, b: 0.3529412, a: 1}
+    rgba: 4282139718
+  m_fontColor: {r: 0.2754717, g: 0.26680905, b: 0.23648985, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3111,19 +3113,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1555190274}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1664698511}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: QuitGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1555190274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3177,6 +3167,22 @@ MonoBehaviour:
   audioSource: {fileID: 1900713371}
   hoverSound: {fileID: 8300000, guid: eeeda5dce5e1d344f8e2f6195f16cb38, type: 3}
   clickSound: {fileID: 8300000, guid: fd5bc78ec087b92418e0181ca35eca24, type: 3}
+  button: {fileID: 1555190273}
+  actionAfterSound:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1664698511}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: QuitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1555497051
 GameObject:
   m_ObjectHideFlags: 0
@@ -3373,6 +3379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1664698512}
   - component: {fileID: 1664698511}
+  - component: {fileID: 1664698513}
   m_Layer: 0
   m_Name: MenuManager
   m_TagString: Untagged
@@ -3409,6 +3416,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1664698513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664698510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8406ebd60e17f479e92b7a6ff3dd6467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OptionsMenu
+  mainMenuPanel: {fileID: 1105403386}
+  optionPanel: {fileID: 242654954}
+  masterVol: {fileID: 832239505}
+  musicVol: {fileID: 863750933}
+  MainAudioMixer: {fileID: 24100000, guid: 01e4ef20bf0644eedb6014982b51e0b0, type: 2}
 --- !u!1 &1699210066
 GameObject:
   m_ObjectHideFlags: 0

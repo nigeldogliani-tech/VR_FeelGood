@@ -1,5 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using System.Collections;
+using UnityEngine.Events;
 
 public class ButtonSound : MonoBehaviour,
     IPointerEnterHandler, IPointerClickHandler
@@ -11,8 +14,24 @@ public class ButtonSound : MonoBehaviour,
     public AudioClip hoverSound;
     public AudioClip clickSound;
 
-    // Son lorsque le curseur ou le rayon VR
-    // arrive sur le bouton
+    [Header("Button Action")]
+    public Button button;
+    public UnityEvent actionAfterSound;
+
+    private bool isPlaying = false;
+
+    private void Awake()
+    {
+        if (button == null)
+            button = GetComponent<Button>();
+
+        if (button != null)
+        {
+            // On remplace l'action immédiate par notre propre système
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(PlayClickSound);
+        }
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (audioSource != null && hoverSound != null)
@@ -20,13 +39,32 @@ public class ButtonSound : MonoBehaviour,
             audioSource.PlayOneShot(hoverSound);
         }
     }
-
-    // Son lorsque le bouton est cliqué
-    public void OnPointerClick(PointerEventData eventData)
+    public void PlayClickSound()
     {
+        if (isPlaying)
+            return;
+
+        StartCoroutine(PlaySoundThenAction());
+    }
+
+    private IEnumerator PlaySoundThenAction()
+    {
+        isPlaying = true;
+
         if (audioSource != null && clickSound != null)
         {
             audioSource.PlayOneShot(clickSound);
+
+            yield return new WaitForSeconds(clickSound.length);
         }
+
+        // Exécuter l'action après le son
+        actionAfterSound.Invoke();
+
+        isPlaying = false;
+    }
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // L'action est gérée par Button.onClick
     }
 }
