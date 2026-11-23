@@ -9,9 +9,15 @@ public class CrankVRController : MonoBehaviour
     public HingeJoint hinge;
     public Rigidbody rb;
 
+    [Header("Grab Line")]
+    public Transform rodStart;
+    public Transform rodEnd;
+
     private IXRSelectInteractor interactor;
 
-    private Vector3 previousHandDirection;
+    private Vector3 initialGrabDirection;
+    private Quaternion initialLeverRotation;
+    private float initialHingeAngle;
 
     void Awake()
     {
@@ -33,26 +39,29 @@ public class CrankVRController : MonoBehaviour
         interactor = args.interactorObject;
 
         Transform hand = interactor.GetAttachTransform(grab);
+        initialHingeAngle = hinge.angle;
 
-        Vector3 axis = transform.TransformDirection(
-            hinge.axis
-        ).normalized;
-
+        Vector3 axis = transform.TransformDirection(hinge.axis).normalized;
         Vector3 pivot = transform.TransformPoint(hinge.anchor);
 
-        // Direction initiale de la main par rapport au pivot
-        Vector3 direction = Vector3.ProjectOnPlane(
-            hand.position - pivot,
-            axis
-        );
+        // Ligne de la tige
+        Vector3 rod = rodEnd.position - rodStart.position;
 
-        if (direction.sqrMagnitude < 0.0001f)
-        {
-            interactor = null;
-            return;
-        }
+        // Point le plus proche sur la ligne
+        float t = Vector3.Dot(hand.position - rodStart.position, rod)
+                  / rod.sqrMagnitude;
 
-        previousHandDirection = direction.normalized;
+        t = Mathf.Clamp01(t);
+
+        Vector3 closestPoint = rodStart.position + t * rod;
+
+        // Direction du point de grab depuis le pivot
+        initialGrabDirection = Vector3.ProjectOnPlane(
+        hand.position - pivot, axis
+        ).normalized;
+
+        initialLeverRotation = rb.rotation;
+        initialHingeAngle = hinge.angle;
     }
 
     void FixedUpdate()
@@ -62,40 +71,42 @@ public class CrankVRController : MonoBehaviour
 
         Transform hand = interactor.GetAttachTransform(grab);
 
-        Vector3 axis = transform.TransformDirection(
-            hinge.axis
-        ).normalized;
-
+        Vector3 axis = transform.TransformDirection(hinge.axis).normalized;
         Vector3 pivot = transform.TransformPoint(hinge.anchor);
 
-        // Direction actuelle de la main
-        Vector3 direction = Vector3.ProjectOnPlane(
-            hand.position - pivot,
-            axis
-        );
+        // Direction actuelle entre pivot et main
+        Vector3 currentDirection = Vector3.ProjectOnPlane(
+            hand.position - pivot, axis
+        ).normalized;
 
-        if (direction.sqrMagnitude < 0.0001f)
-            return;
-
-        Vector3 currentHandDirection = direction.normalized;
-
-        // Calcul du petit angle parcouru depuis la dernière frame
+        // Angle parcouru par la main
         float deltaAngle = Vector3.SignedAngle(
-            previousHandDirection,
-            currentHandDirection,
+            initialGrabDirection,
+            currentDirection,
             axis
         );
 
-        // Appliquer la rotation au Rigidbody
-        Quaternion rotation = Quaternion.AngleAxis(
-            deltaAngle,
-            axis
-        );
+        // Angle désiré
+        float targetAngle = initialHingeAngle + deltaAngle;
 
-        rb.MoveRotation(rotation * rb.rotation);
+        // Respect des limites
+        if (hinge.useLimits)
+        {
+            targetAngle = Mathf.Clamp(
+                targetAngle,
+                hinge.limits.min,
+                hinge.limits.max
+            );
+        }
 
-        // Mémoriser la direction pour la prochaine frame
-        previousHandDirection = currentHandDirection;
+        float appliedAngle = targetAngle - initialHingeAngle;
+
+        // Rotation autour de l'axe du Hinge
+        Quaternion targetRotation =
+            Quaternion.AngleAxis(appliedAngle, axis)
+            * initialLeverRotation;
+
+        rb.MoveRotation(targetRotation);
     }
 
     void OnRelease(SelectExitEventArgs args)
@@ -112,3 +123,4 @@ public class CrankVRController : MonoBehaviour
         }
     }
 }
+
