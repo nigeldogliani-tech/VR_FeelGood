@@ -1,6 +1,7 @@
 
 
 
+
 using UnityEngine;
 
 public class PencilLaser : MonoBehaviour
@@ -66,25 +67,34 @@ public class PencilLaser : MonoBehaviour
 
         Vector3 halfSize = box.size * 0.5f;
 
+        float u = 0f;
+        float v = 0f;
+        int face = 0;
+
         if (Mathf.Abs(localNormal.x) > 0.9f)
         {
-            return new Vector2(
-                (localPoint.z / halfSize.z + 1f) * 0.5f,
-                (localPoint.y / halfSize.y + 1f) * 0.5f
-            );
+            u = (localPoint.z / halfSize.z + 1f) * 0.5f;
+            v = (localPoint.y / halfSize.y + 1f) * 0.5f;
+            face = localNormal.x > 0 ? 0 : 1;
+        }
+        else if (Mathf.Abs(localNormal.y) > 0.9f)
+        {
+            u = (localPoint.x / halfSize.x + 1f) * 0.5f;
+            v = (localPoint.z / halfSize.z + 1f) * 0.5f;
+            face = localNormal.y > 0 ? 2 : 3;
+        }
+        else
+        {
+            u = (localPoint.x / halfSize.x + 1f) * 0.5f;
+            v = (localPoint.y / halfSize.y + 1f) * 0.5f;
+            face = localNormal.z > 0 ? 4 : 5;
         }
 
-        if (Mathf.Abs(localNormal.y) > 0.9f)
-        {
-            return new Vector2(
-                (localPoint.x / halfSize.x + 1f) * 0.5f,
-                (localPoint.z / halfSize.z + 1f) * 0.5f
-            );
-        }
+        float faceWidth = 1f / 6f;
 
         return new Vector2(
-            (localPoint.x / halfSize.x + 1f) * 0.5f,
-            (localPoint.y / halfSize.y + 1f) * 0.5f
+            face * faceWidth + u * faceWidth,
+            v
         );
     }
 }
