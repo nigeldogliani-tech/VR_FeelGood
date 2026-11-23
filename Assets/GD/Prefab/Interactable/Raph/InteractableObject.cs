@@ -13,12 +13,20 @@ public class InteractableObject : XRGrabInteractable
     private Rigidbody rb;
     private Slot currentSlot;
 
+    private Transform currentSnapPoint;
+
+    private Vector3 localPosition;
+    private Quaternion localRotation;
+
+    private bool originalDetectCollisions;
+
 
     protected override void Awake()
     {
         base.Awake();
 
         rb = GetComponent<Rigidbody>();
+        originalDetectCollisions = rb.detectCollisions;
 
         // Détect joueur attrappe obj 
         selectEntered.AddListener(_ => OnGrabbed());
@@ -30,27 +38,45 @@ public class InteractableObject : XRGrabInteractable
 
     private void OnGrabbed()
     {
-        // si obj dans slot = libere slot 
+        // Si objet dans slot = libère slot.
         if (currentSlot != null)
         {
             currentSlot.ClearSlot(this);
-
             currentSlot = null;
         }
 
         IsSnapped = false;
 
-        // obj out of snap point 
-        transform.SetParent(null, true);
+        // Arrête le suivi du SnapPoint.
+        currentSnapPoint = null;
+
+        // Réactive les collisions lorsque le joueur récupère l'objet.
+        rb.detectCollisions = originalDetectCollisions;
+
+        // Réinitialise les contraintes physiques.
+        rb.constraints = RigidbodyConstraints.None;
     }
 
 
     private void OnReleased()
     {
-        // après grab = physique activated 
+        if (IsSnapped)
+            return;
+
         rb.isKinematic = false;
     }
 
+    private void LateUpdate()
+    {
+        if (!IsSnapped || currentSnapPoint == null)
+            return;
+
+        // Suit la position sans hériter de la scale.
+        transform.position = currentSnapPoint.position + currentSnapPoint.rotation * localPosition;
+
+        // Suit la rotation.
+        transform.rotation = currentSnapPoint.rotation * localRotation;
+    }
 
 
     public void SnapToSlot(Transform snapPoint, Slot slot, SlotType slotType)
@@ -69,17 +95,20 @@ public class InteractableObject : XRGrabInteractable
         float savedYRotation = transform.eulerAngles.y;
 
         // Mémorise la taille globale de l'objet.
-        Vector3 savedScale = transform.lossyScale;
+        //Vector3 savedScale = transform.lossyScale;
 
         // Arrête les mouvements physiques.
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
-        // Désactive la physique.
+        // Désactive la physique
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;
+        rb.detectCollisions = false;
 
         // Attache l'objet au SnapPoint.
-        transform.SetParent(snapPoint, true);
+        //transform.SetParent(snapPoint, true);
 
 
         if (slotType == SlotType.FreePlacement)
@@ -94,19 +123,19 @@ public class InteractableObject : XRGrabInteractable
         {
             // Aligne l'objet sur le SnapPoint.
             transform.position = snapPoint.position;
-            transform.rotation = snapPoint.rotation;
+            transform.rotation = Quaternion.Euler(0f, savedYRotation, 0f);
         }
 
-        Vector3 parentScale = snapPoint.lossyScale;
+      // Vector3 parentScale = snapPoint.lossyScale;
 
         // Évite une division par zéro.
-        if (Mathf.Abs(parentScale.x) < 0.0001f ||Mathf.Abs(parentScale.y) < 0.0001f ||Mathf.Abs(parentScale.z) < 0.0001f)
-        {
-            Debug.LogWarning("Le SnapPoint possède une échelle nulle.");
-            return;
-        }
+       //if (Mathf.Abs(parentScale.x) < 0.0001f ||Mathf.Abs(parentScale.y) < 0.0001f ||Mathf.Abs(parentScale.z) < 0.0001f)
+       // {
+           // Debug.LogWarning("Le SnapPoint possède une échelle nulle.");
+           // return;
+        //}
 
-        transform.localScale = new Vector3(savedScale.x / parentScale.x,savedScale.y / parentScale.y,savedScale.z / parentScale.z );
+       //transform.localScale = new Vector3(savedScale.x / parentScale.x,savedScale.y / parentScale.y,savedScale.z / parentScale.z );
 
         // Actualise les positions des Colliders.
         Physics.SyncTransforms();
@@ -117,9 +146,9 @@ public class InteractableObject : XRGrabInteractable
         // Recherche le point le plus bas de l'objet.
         float lowestPoint = float.PositiveInfinity;
 
-        foreach (Collider objectCollider in objectColliders)
+       foreach (Collider objectCollider in objectColliders)
         {
-            if (!objectCollider.enabled)
+           if (!objectCollider.enabled)
             {
                 continue;
             }
@@ -134,5 +163,13 @@ public class InteractableObject : XRGrabInteractable
 
             transform.position += Vector3.up * heightCorrection;
         }
+        // Enregistre le SnapPoint à suivre.
+        currentSnapPoint = snapPoint;
+
+        // Mémorise la position relative sans prendre en compte la scale.
+        localPosition = Quaternion.Inverse(snapPoint.rotation) * (transform.position - snapPoint.position);
+
+        // Mémorise la rotation relative.
+        localRotation = Quaternion.Inverse(snapPoint.rotation) * transform.rotation;
     }
 }

@@ -4369,7 +4369,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Slot
   slotType: 1
-  acceptedItemID: Cup
+  acceptedItemID: choco
   snapPoint: {fileID: 378331096}
   isDeliverySlot: 0
   customerManager: {fileID: 0}
@@ -4482,7 +4482,7 @@ Transform:
   m_GameObject: {fileID: 1172181099}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.83, y: 0, z: 2.13484}
+  m_LocalPosition: {x: 5.339, y: 0, z: 2.13484}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4748,7 +4748,7 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
-  itemID: Tea
+  itemID: milk
   isFinalDrink: 0
 --- !u!54 &1250572058
 Rigidbody:
@@ -7673,7 +7673,7 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
-  itemID: Tea
+  itemID: nothing
   isFinalDrink: 0
 --- !u!54 &1997611621
 Rigidbody:
