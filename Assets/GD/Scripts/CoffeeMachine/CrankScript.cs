@@ -6,28 +6,31 @@ public class CrankScript : MonoBehaviour
     public float activationAngle = 350f;
     [SerializeField] private MakeCoffee MakeCoffee;
     public float turns;
+    private float previousAngle;
+    private float totalAngle;
 
 
+    void Start()
+    {
+        previousAngle = CrankJoint.angle;
+    }
 
     void Update()
     {
-        float angle = Mathf.Abs(CrankJoint.angle);
+        float currentAngle = CrankJoint.angle;
 
-        if (angle >= activationAngle )
+        float delta = Mathf.DeltaAngle(previousAngle, currentAngle);
+
+        previousAngle = currentAngle;
+
+        totalAngle += Mathf.Abs(delta);
+
+        if (totalAngle >= 360f)
         {
-            // event de la machine à moudre à foutre ici
-            
-            Debug.Log("Crank");
-            activationAngle = 0f;
-            turns = turns+1;
-            MakeCoffee.startGrind();
-            if (turns >= 3)
-            {
-                turns = 0f;
-            }
+            totalAngle -= 360f;
+            turns++;
+
+            Debug.Log("Nombre de tours : " + turns);
         }
-
-       
-
     }
 }
