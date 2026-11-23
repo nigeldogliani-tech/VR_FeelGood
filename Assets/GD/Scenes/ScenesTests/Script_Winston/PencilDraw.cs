@@ -26,6 +26,7 @@ public class PencilDraw : MonoBehaviour
                 Debug.Log("Hit: " + hit.collider.name);
                 Debug.Log("UV: " + hit.textureCoord);
 
+                Debug.Log("UV coordinates: " + hit.textureCoord);
                 painter.PaintAt(hit.textureCoord);
             }
         }
