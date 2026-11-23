@@ -18,15 +18,12 @@ public class InteractableObject : XRGrabInteractable
     private Vector3 localPosition;
     private Quaternion localRotation;
 
-    private bool originalDetectCollisions;
-
 
     protected override void Awake()
     {
         base.Awake();
 
         rb = GetComponent<Rigidbody>();
-        originalDetectCollisions = rb.detectCollisions;
 
         // Détect joueur attrappe obj 
         selectEntered.AddListener(_ => OnGrabbed());
@@ -50,10 +47,9 @@ public class InteractableObject : XRGrabInteractable
         // Arrête le suivi du SnapPoint.
         currentSnapPoint = null;
 
-        // Réactive les collisions lorsque le joueur récupère l'objet.
-        rb.detectCollisions = originalDetectCollisions;
+        // Réactive la physique de l'objet.
+        rb.isKinematic = false;
 
-        // Réinitialise les contraintes physiques.
         rb.constraints = RigidbodyConstraints.None;
     }
 
@@ -63,6 +59,7 @@ public class InteractableObject : XRGrabInteractable
         if (IsSnapped)
             return;
 
+        // Active la physique lorsque le joueur lâche l'objet.
         rb.isKinematic = false;
     }
 
@@ -101,11 +98,8 @@ public class InteractableObject : XRGrabInteractable
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
-        // Désactive la physique
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        // Désactive la simulation physique pendant le placement.
         rb.isKinematic = true;
-        rb.detectCollisions = false;
 
         // Attache l'objet au SnapPoint.
         //transform.SetParent(snapPoint, true);
