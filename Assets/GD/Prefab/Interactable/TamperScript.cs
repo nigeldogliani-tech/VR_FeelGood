@@ -9,7 +9,7 @@ public class TamperScript : MonoBehaviour
     {
         if (other.gameObject == tamper)
         {
-            MakeCoffee.doStamped();
+            MakeCoffee.Stamped();
             Debug.Log("je marche youpi");
         }
     }

@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class MakeCoffee : MonoBehaviour
 {
-    private bool isInPlaced = false;
+    public bool isInPlaced = false;
     public bool cupIsPlaced = false;
-    private bool isTamped = false;
-    private bool cupIsEmpty = true;
-    private bool isEmpty = true;
+    public bool isTamped = false;
+    public bool cupIsEmpty = true;
+    public bool isEmpty = true;
 
-    [SerializeField] private CrankScript crankScript;
+    //[SerializeField] private CrankScript crankScript;
+    [SerializeField] private Slot slot;
 
     public void placedEnable()
     {
@@ -23,40 +24,40 @@ public class MakeCoffee : MonoBehaviour
     }
     public void startMachine()
     {
-        if(isInPlaced && isTamped == true)
+        if(isInPlaced == true && isTamped == true)
         {
-            if (cupIsPlaced && cupIsEmpty == true)
+            if (cupIsPlaced == true && cupIsEmpty == true)
             {
                 cupIsEmpty = false;
                 isEmpty = true;
                 isTamped = false;
-
+                slot.FillCup();
                 Debug.Log("is Start");
             }
         }
     }
-    public void startGrind()
+    public void startGrind(float turnsRecept)
     {
-        if (isInPlaced && isEmpty == true)
+        if (isInPlaced == true && isEmpty == true)
         {
-            if (crankScript.turns == 1)
+            if (turnsRecept == 1)
             {
                 Debug.Log("is Start in 1");
             }
-            else if (crankScript.turns == 2)
+            else if (turnsRecept == 2)
             {
                 Debug.Log("is Start in 2");
             }
-            else if (crankScript.turns == 3)
+            else if (turnsRecept == 3)
             {
                 Debug.Log("is Start in 3");
                 isEmpty = false;
             }
         }
     }
-    public void doStamped()
+    public void Stamped()
     {
-        if (isEmpty == true && isTamped == false)
+        if (isEmpty  == false && isTamped == false)
         {
             isTamped = true;
             Debug.Log("is Stamped");

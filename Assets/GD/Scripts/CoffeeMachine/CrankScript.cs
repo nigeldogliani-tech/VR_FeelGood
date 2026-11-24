@@ -28,8 +28,17 @@ public class CrankScript : MonoBehaviour
         if (totalAngle >= 360f)
         {
             totalAngle -= 360f;
-            turns++;
-            MakeCoffee.startGrind();
+            if (MakeCoffee.isInPlaced == true && MakeCoffee.isEmpty == true)
+            {
+                turns++;
+                MakeCoffee.startGrind(turns);
+                if (turns >= 3)
+                {
+                    turns = 0;
+                }
+            }
+
+           
 
             Debug.Log("Nombre de tours : " + turns);
         }

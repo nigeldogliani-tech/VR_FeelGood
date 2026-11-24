@@ -20,13 +20,15 @@ public class Slot : MonoBehaviour
     [Header("Delivery Settings")]
     [SerializeField] private bool isDeliverySlot;
 
-    [SerializeField]
-    private CustomerManager customerManager;
+    [SerializeField] private CustomerManager customerManager;
+
+    private GameObject gameObject1;
 
 
     private void OnTriggerStay(Collider other)
     {
         InteractableObject obj = other.GetComponentInParent<InteractableObject>();
+        gameObject1 = other.gameObject;
 
         if (obj == null)
         {
@@ -89,6 +91,7 @@ public class Slot : MonoBehaviour
         currentObject = obj;
         if (makeCoffee != null)
         {
+            makeCoffee.cupIsEmpty = gameObject1.GetComponent<CupState>().cupIsEmpty;
             makeCoffee.cupIsPlaced = true;
         }
         return true;
@@ -147,6 +150,11 @@ public class Slot : MonoBehaviour
         Destroy(deliveredObject.gameObject);
 
         return true;
+    }
+
+    public void FillCup()
+    {
+        gameObject1.GetComponent<CupState>().cupIsEmpty = makeCoffee.cupIsEmpty;
     }
 
     public void ClearSlot(InteractableObject obj)
