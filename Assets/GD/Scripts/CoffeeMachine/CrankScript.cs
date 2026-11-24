@@ -29,6 +29,7 @@ public class CrankScript : MonoBehaviour
         {
             totalAngle -= 360f;
             turns++;
+            MakeCoffee.startGrind();
 
             Debug.Log("Nombre de tours : " + turns);
         }

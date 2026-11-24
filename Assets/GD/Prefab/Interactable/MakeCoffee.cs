@@ -4,6 +4,10 @@ public class MakeCoffee : MonoBehaviour
 {
     private bool isInPlaced = false;
     public bool cupIsPlaced = false;
+    private bool isTamped = false;
+    private bool cupIsEmpty = true;
+    private bool isEmpty = true;
+
     [SerializeField] private CrankScript crankScript;
 
     public void placedEnable()
@@ -19,17 +23,21 @@ public class MakeCoffee : MonoBehaviour
     }
     public void startMachine()
     {
-        if(isInPlaced)
+        if(isInPlaced && isTamped == true)
         {
-            if (cupIsPlaced == true)
+            if (cupIsPlaced && cupIsEmpty == true)
             {
+                cupIsEmpty = false;
+                isEmpty = true;
+                isTamped = false;
+
                 Debug.Log("is Start");
             }
         }
     }
     public void startGrind()
     {
-        if (isInPlaced)
+        if (isInPlaced && isEmpty == true)
         {
             if (crankScript.turns == 1)
             {
@@ -42,18 +50,16 @@ public class MakeCoffee : MonoBehaviour
             else if (crankScript.turns == 3)
             {
                 Debug.Log("is Start in 3");
+                isEmpty = false;
             }
         }
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void doStamped()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (isEmpty == true && isTamped == false)
+        {
+            isTamped = true;
+            Debug.Log("is Stamped");
+        }
     }
 }
