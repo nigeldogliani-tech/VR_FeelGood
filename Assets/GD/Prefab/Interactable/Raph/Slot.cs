@@ -117,6 +117,16 @@ public class Slot : MonoBehaviour
             return false;
         }
 
+        // Ajoute un point si la commande est validée.
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.AddPoint();
+        }
+        else
+        {
+            Debug.LogWarning("ScoreManager introuvable !");
+        }
+
         //essaye de valider 
         bool orderValidated = customerManager.TryValidateOrder(currentObject.itemID);
 
