@@ -11,6 +11,12 @@ public class MakeCoffee : MonoBehaviour
     //[SerializeField] private CrankScript crankScript;
     [SerializeField] private Slot slot;
 
+    [SerializeField] private InteractableObject currentCup;
+    public void SetCurrentCup(InteractableObject cup)
+    {
+        currentCup = cup;
+    }
+
     public void placedEnable()
     {
         isInPlaced = true;
@@ -23,19 +29,22 @@ public class MakeCoffee : MonoBehaviour
 
     }
     public void startMachine()
+{
+    if (isInPlaced == true && isTamped == true)
     {
-        if(isInPlaced == true && isTamped == true)
+        if (cupIsPlaced == true && cupIsEmpty == true)
         {
-            if (cupIsPlaced == true && cupIsEmpty == true)
-            {
-                cupIsEmpty = false;
-                isEmpty = true;
-                isTamped = false;
-                slot.FillCup();
-                Debug.Log("is Start");
-            }
+            cupIsEmpty = false;
+            isEmpty = true;
+            isTamped = false;
+
+            // Transforme la tasse en café
+            CreateCoffee();
+
+            Debug.Log("is Start");
         }
     }
+}
     public void startGrind(float turnsRecept)
     {
         if (isInPlaced == true && isEmpty == true)
@@ -62,5 +71,28 @@ public class MakeCoffee : MonoBehaviour
             isTamped = true;
             Debug.Log("is Stamped");
         }
+    }
+
+    public void CreateCoffee()
+    {
+        if (currentCup == null)
+        {
+            Debug.LogWarning("Aucune tasse trouvée !");
+            return;
+        }
+
+        // Récupération du composant CupState
+        CupState cupState = currentCup.GetComponent<CupState>();
+
+        if (cupState != null)
+        {
+            cupState.cupIsEmpty = false;
+        }
+
+        // Transformation en boisson finale
+        currentCup.isFinalDrink = true;
+        currentCup.itemID = "coffee";
+
+        Debug.Log("La tasse contient maintenant un café !");
     }
 }

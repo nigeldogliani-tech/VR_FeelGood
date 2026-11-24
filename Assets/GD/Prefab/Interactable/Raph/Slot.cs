@@ -91,8 +91,15 @@ public class Slot : MonoBehaviour
         currentObject = obj;
         if (makeCoffee != null)
         {
-            makeCoffee.cupIsEmpty = gameObject1.GetComponent<CupState>().cupIsEmpty;
+            CupState cupState = obj.GetComponent<CupState>();
+
+            if (cupState != null)
+            {
+                makeCoffee.cupIsEmpty = cupState.cupIsEmpty;
+            }
+
             makeCoffee.cupIsPlaced = true;
+            makeCoffee.SetCurrentCup(obj);
         }
         return true;
     }
@@ -164,7 +171,9 @@ public class Slot : MonoBehaviour
             if (makeCoffee != null)
             {
                 makeCoffee.cupIsPlaced = false;
+                makeCoffee.SetCurrentCup(null);
             }
+
             currentObject = null;
         }
     }
