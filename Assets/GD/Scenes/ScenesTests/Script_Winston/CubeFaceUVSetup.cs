@@ -1,4 +1,5 @@
 
+
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -7,8 +8,6 @@ public class CubeFaceUVSetup : MonoBehaviour
     void Start()
     {
         MeshFilter meshFilter = GetComponent<MeshFilter>();
-
-        // Create a separate copy of the cube mesh
         Mesh mesh = meshFilter.mesh;
 
         Vector3[] vertices = mesh.vertices;
@@ -43,14 +42,17 @@ public class CubeFaceUVSetup : MonoBehaviour
                 face = n.z > 0 ? 4 : 5;
             }
 
+            int column = face % 3;
+            int row = face / 3;
+
             uv[i] = new Vector2(
-                (face + u) / 6f,
-                v
+                (column + u) / 3f,
+                (row + v) / 2f
             );
         }
 
         mesh.uv = uv;
 
-        Debug.Log("Cube faces now have separate UV regions!");
+        Debug.Log("Cube UVs changed to a 3x2 grid!");
     }
 }
