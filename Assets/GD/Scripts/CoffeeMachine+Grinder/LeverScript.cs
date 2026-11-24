@@ -6,6 +6,7 @@ public class LeverScript : MonoBehaviour
     public HingeJoint leverJoint;
     public float activationAngle = 35f;
     [SerializeField] private MakeCoffee MakeCoffee;
+    [SerializeField] private CoffeeMachineSFX CoffeeMachineSounds;
 
     private bool activated = false;
 
@@ -18,6 +19,7 @@ public class LeverScript : MonoBehaviour
             activated = true;
             MakeCoffee.startMachine();
             Debug.Log("Levier tiré ! Extraction du café.");
+            CoffeeMachineSounds.PlaySoundMachine();
         }
 
         if (angle < 5f)

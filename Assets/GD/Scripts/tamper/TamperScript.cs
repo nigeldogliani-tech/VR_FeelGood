@@ -4,6 +4,7 @@ public class TamperScript : MonoBehaviour
 {
     [SerializeField] private GameObject tamper;
     [SerializeField] private MakeCoffee MakeCoffee;
+    [SerializeField] private TampSFX TampSound;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -11,6 +12,7 @@ public class TamperScript : MonoBehaviour
         {
             MakeCoffee.Stamped();
             Debug.Log("je marche youpi");
+            TampSound.PlaySoundTamp();
         }
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class MakeCoffee : MonoBehaviour
 {
     public bool isInPlaced = false;
@@ -7,6 +8,9 @@ public class MakeCoffee : MonoBehaviour
     public bool isTamped = false;
     public bool cupIsEmpty = true;
     public bool isEmpty = true;
+
+    [SerializeField] private FilterClickSFX filterRef;
+    [SerializeField] private CoffeeMachineSFX CoffeeMachineSounds;
 
     //[SerializeField] private CrankScript crankScript;
     [SerializeField] private Slot slot;
@@ -21,6 +25,7 @@ public class MakeCoffee : MonoBehaviour
     {
         isInPlaced = true;
         Debug.Log("is place");
+        filterRef.PlaySoundClick();
     }
     public void placedDisable() 
     { 
