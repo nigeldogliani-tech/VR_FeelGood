@@ -91,18 +91,12 @@ public class InteractableObject : XRGrabInteractable
         Vector3 savedPosition = transform.position;
         float savedYRotation = transform.eulerAngles.y;
 
-        // Mémorise la taille globale de l'objet.
-        //Vector3 savedScale = transform.lossyScale;
-
         // Arrête les mouvements physiques.
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
         // Désactive la simulation physique pendant le placement.
         rb.isKinematic = true;
-
-        // Attache l'objet au SnapPoint.
-        //transform.SetParent(snapPoint, true);
 
 
         if (slotType == SlotType.FreePlacement)
@@ -119,17 +113,6 @@ public class InteractableObject : XRGrabInteractable
             transform.position = snapPoint.position;
             transform.rotation = Quaternion.Euler(0f, savedYRotation, 0f);
         }
-
-      // Vector3 parentScale = snapPoint.lossyScale;
-
-        // Évite une division par zéro.
-       //if (Mathf.Abs(parentScale.x) < 0.0001f ||Mathf.Abs(parentScale.y) < 0.0001f ||Mathf.Abs(parentScale.z) < 0.0001f)
-       // {
-           // Debug.LogWarning("Le SnapPoint possède une échelle nulle.");
-           // return;
-        //}
-
-       //transform.localScale = new Vector3(savedScale.x / parentScale.x,savedScale.y / parentScale.y,savedScale.z / parentScale.z );
 
         // Actualise les positions des Colliders.
         Physics.SyncTransforms();
