@@ -11,8 +11,6 @@ public class CustomerManager : MonoBehaviour
     [Header("Daily Customer Settings")]// au début de la journée alea choisit nb total clients entre ces deux nb
     [SerializeField] private int minCustomers = 5;
     [SerializeField] private int maxCustomers = 12;
-
-
     [SerializeField] private float spawnCheckInterval = 0.25f;
     [SerializeField] private float spawnInterval = 2f;
 
@@ -25,21 +23,15 @@ public class CustomerManager : MonoBehaviour
         "choco",
         "tea"
     };
-
-
     private List<Customer> activeCustomers = new List<Customer>();
-
     private bool[] occupiedSpawnPoints;
     private int totalCustomersToday;
     private int spawnedCustomers;
     private int nextOrderID = 1;
-
     private bool dayActive;
-
     private string lastDrinkID = "";
     private int consecutiveDrinkCount = 0;
     private const int maxConsecutiveDrinks = 3;
-
     public bool IsDayComplete => spawnedCustomers >= totalCustomersToday && activeCustomers.Count == 0;
 
     private void Awake()
