@@ -28,11 +28,13 @@ public class Slot : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        Debug.Log("OnTriggerStay : " + other.name);
         InteractableObject obj = other.GetComponentInParent<InteractableObject>();
         gameObject1 = other.gameObject;
 
         if (obj == null)
         {
+            Debug.Log("Pas d'InteractableObject trouvé !");
             return;
         }
 
