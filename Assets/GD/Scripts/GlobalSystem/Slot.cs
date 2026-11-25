@@ -21,6 +21,7 @@ public class Slot : MonoBehaviour
     [SerializeField] private bool isDeliverySlot;
 
     [SerializeField] private CustomerManager customerManager;
+    [SerializeField] private CoffeeIsInPreparation coffeeIsInPreparation;
 
     private GameObject gameObject1;
 
@@ -86,6 +87,7 @@ public class Slot : MonoBehaviour
 
         // Place l'objet selon le type de Slot.
         obj.SnapToSlot(snapPoint, this, slotType);
+        coffeeIsInPreparation.rbCup = gameObject1;
 
         // Mémorise l'objet placé.
         currentObject = obj;

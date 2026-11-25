@@ -799,6 +799,10 @@ PrefabInstance:
       propertyPath: MakeCoffee
       value: 
       objectReference: {fileID: 190731563}
+    - target: {fileID: 7322231287802293128, guid: 4ca07789b24d23d45a6e601a1c6cb67a, type: 3}
+      propertyPath: coffeeIsInPreparation
+      value: 
+      objectReference: {fileID: 494195987}
     - target: {fileID: 7912615275203490013, guid: 4ca07789b24d23d45a6e601a1c6cb67a, type: 3}
       propertyPath: m_Name
       value: pivot 1
@@ -1503,6 +1507,7 @@ GameObject:
   - component: {fileID: 494195982}
   - component: {fileID: 494195981}
   - component: {fileID: 494195986}
+  - component: {fileID: 494195987}
   m_Layer: 0
   m_Name: macineCoffee
   m_TagString: Untagged
@@ -1635,6 +1640,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &494195987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494195980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86ad10cd2afeffb47a7190ffe1ad8f47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoffeeIsInPreparation
+  rbFilter: {fileID: 1142475235}
+  rbCup: {fileID: 0}
+  rbLever: {fileID: 1565246349}
 --- !u!4 &501324093 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5258331117553129771, guid: 6b12f432fa58c224baf0d659706362be, type: 3}
@@ -1773,6 +1793,7 @@ MonoBehaviour:
   snapPoint: {fileID: 60288681}
   isDeliverySlot: 0
   customerManager: {fileID: 0}
+  coffeeIsInPreparation: {fileID: 494195987}
 --- !u!65 &628581574
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3811,6 +3832,11 @@ Transform:
   - {fileID: 453167708}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!1 &1565246349 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7912615275203490013, guid: 4ca07789b24d23d45a6e601a1c6cb67a, type: 3}
+  m_PrefabInstance: {fileID: 209308748}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1568988754
 GameObject:
   m_ObjectHideFlags: 0
@@ -4640,6 +4666,7 @@ MonoBehaviour:
   snapPoint: {fileID: 1797820236}
   isDeliverySlot: 0
   customerManager: {fileID: 0}
+  coffeeIsInPreparation: {fileID: 0}
 --- !u!1 &1865571418
 GameObject:
   m_ObjectHideFlags: 0
