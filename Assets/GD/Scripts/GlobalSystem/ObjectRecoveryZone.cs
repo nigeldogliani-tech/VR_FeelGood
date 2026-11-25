@@ -19,10 +19,10 @@ public class ObjectRecoveryZone : MonoBehaviour
         }
 
         // Ignore les objets sans itemID.
-        if (string.IsNullOrEmpty(obj.itemID))
-        {
-            return;
-        }
+        //if (string.IsNullOrEmpty(obj.itemID))
+        //{
+            //return;
+        //}
 
         // Ne récupère pas un objet encore tenu par le joueur.
         if (obj.IsGrabbed)
