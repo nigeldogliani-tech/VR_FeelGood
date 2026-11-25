@@ -1,13 +1,20 @@
 
+
 using UnityEngine;
 
 public class PencilLaser : MonoBehaviour
 {
     public float laserDistance = 0.2f;
 
+    [Header("Pencil")]
+    public Renderer pencilTip;
+    public CubeTexturePainter cubePainter;
+
     private LineRenderer laser;
     private Vector2 previousUV;
     private CubeTexturePainter previousPainter;
+
+    private Color currentColor = Color.black;
 
     void Start()
     {
@@ -17,6 +24,8 @@ public class PencilLaser : MonoBehaviour
         laser.useWorldSpace = true;
         laser.startWidth = 0.003f;
         laser.endWidth = 0.003f;
+
+        UpdatePencilColor();
     }
 
     void Update()
@@ -34,6 +43,18 @@ public class PencilLaser : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
+            // Detect a palette sphere
+            PaletteColor palette = hit.collider.GetComponent<PaletteColor>();
+
+            if (palette != null)
+            {
+                currentColor = palette.color;
+                UpdatePencilColor();
+                previousPainter = null;
+                continue;
+            }
+
+            // Detect the painting cube
             BoxCollider box = hit.collider as BoxCollider;
 
             if (box == null)
@@ -44,6 +65,9 @@ public class PencilLaser : MonoBehaviour
 
             if (painter == null)
                 continue;
+
+            // Apply selected colour
+            painter.brushColor = currentColor;
 
             Vector2 uv = GetBoxUV(box, hit);
 
@@ -72,6 +96,20 @@ public class PencilLaser : MonoBehaviour
 
         laser.SetPosition(0, start);
         laser.SetPosition(1, end);
+    }
+
+    void UpdatePencilColor()
+    {
+        if (pencilTip != null)
+        {
+            pencilTip.material.color = currentColor;
+        }
+
+        if (laser != null)
+        {
+            laser.startColor = currentColor;
+            laser.endColor = currentColor;
+        }
     }
 
     Vector2 GetBoxUV(BoxCollider box, RaycastHit hit)
