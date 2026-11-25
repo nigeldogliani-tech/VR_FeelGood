@@ -87,7 +87,10 @@ public class Slot : MonoBehaviour
 
         // Place l'objet selon le type de Slot.
         obj.SnapToSlot(snapPoint, this, slotType);
-        coffeeIsInPreparation.rbCup = gameObject1;
+        if (coffeeIsInPreparation != null)
+        {
+            coffeeIsInPreparation.rbCup = gameObject1;
+        }
 
         // Mémorise l'objet placé.
         currentObject = obj;

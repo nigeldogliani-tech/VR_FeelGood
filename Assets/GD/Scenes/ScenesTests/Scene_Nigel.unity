@@ -617,6 +617,7 @@ MonoBehaviour:
   isEmpty: 1
   filterRef: {fileID: 1142475242}
   CoffeeMachineSounds: {fileID: 0}
+  coffeeIsInPreparation: {fileID: 494195987}
   slot: {fileID: 628581573}
   currentCup: {fileID: 0}
 --- !u!1 &207940844
@@ -3497,7 +3498,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8135023674665499069, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5699,6 +5700,7 @@ MonoBehaviour:
   isEmpty: 1
   filterRef: {fileID: 1142475242}
   CoffeeMachineSounds: {fileID: 0}
+  coffeeIsInPreparation: {fileID: 0}
   slot: {fileID: 0}
   currentCup: {fileID: 0}
 --- !u!1 &2064988832

@@ -11,6 +11,7 @@ public class MakeCoffee : MonoBehaviour
 
     [SerializeField] private FilterClickSFX filterRef;
     [SerializeField] private CoffeeMachineSFX CoffeeMachineSounds;
+    [SerializeField] private CoffeeIsInPreparation coffeeIsInPreparation;
 
     //[SerializeField] private CrankScript crankScript;
     [SerializeField] private Slot slot;
@@ -39,6 +40,7 @@ public class MakeCoffee : MonoBehaviour
     {
         if (cupIsPlaced == true && cupIsEmpty == true)
         {
+            coffeeIsInPreparation.DesableRigidbodyOfCupLeverAndFilter();
             cupIsEmpty = false;
             isEmpty = true;
             isTamped = false;

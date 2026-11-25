@@ -7,7 +7,6 @@ public class LeverScript : MonoBehaviour
     public float activationAngle = 35f;
     [SerializeField] private MakeCoffee MakeCoffee;
     [SerializeField] private CoffeeMachineSFX CoffeeMachineSounds;
-    [SerializeField] private CoffeeIsInPreparation coffeeIsInPreparation;
 
     private bool activated = false;
 
@@ -19,7 +18,6 @@ public class LeverScript : MonoBehaviour
         {
             activated = true;
             MakeCoffee.startMachine();
-            coffeeIsInPreparation.DesableRigidbodyOfCupLeverAndFilter();
             Debug.Log("Levier tiré ! Extraction du café.");
             CoffeeMachineSounds.PlaySoundMachine();
         }
