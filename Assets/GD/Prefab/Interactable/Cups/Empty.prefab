@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 3705479440112365868}
   - component: {fileID: 1780494000351706399}
   - component: {fileID: 6241453013790051931}
+  - component: {fileID: -6597178911318175180}
+  - component: {fileID: -4191696782085169663}
   m_Layer: 0
   m_Name: Empty
   m_TagString: Untagged
@@ -291,6 +293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CupState
   cupIsEmpty: 1
+  filledWithMilk: 0
 --- !u!82 &3705479440112365868
 AudioSource:
   m_ObjectHideFlags: 0
@@ -415,6 +418,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FillingCupWithMilk
   cupState: {fileID: 8759952634252266689}
+--- !u!114 &-6597178911318175180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3112005693212434400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c91d9ab6731470188f04224e6338b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CubeFaceUVSetup
+--- !u!114 &-4191696782085169663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3112005693212434400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1d4d22bf2af64982967179f67435fad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CubeTexturePainter
+  textureSize: 1024
+  brushSize: 5
+  brushColor: {r: 0.05, g: 0.05, b: 0.05, a: 1}
 --- !u!1 &8168048913893173845
 GameObject:
   m_ObjectHideFlags: 0
