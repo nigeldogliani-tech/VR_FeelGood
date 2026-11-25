@@ -5,7 +5,7 @@ public class MilkPourer : MonoBehaviour
     [SerializeField] private Transform spoutPoint;
     [SerializeField] private float pourAngle = 50f;
     [SerializeField] private float pourDistance = 1f;
-    [SerializeField] private float milkSpeed = 0.5f;*
+    [SerializeField] private float milkSpeed = 0.5f;
     
 
 
