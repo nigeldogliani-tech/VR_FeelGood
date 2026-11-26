@@ -5,6 +5,10 @@ public class OrderButton : MonoBehaviour
 {
     [SerializeField] private Slot deliverySlot;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip successSound;
+    [SerializeField] private AudioClip errorSound;
+
     private XRGrabInteractable grabInteractable;
 
     private void Awake()
@@ -16,21 +20,64 @@ public class OrderButton : MonoBehaviour
             Debug.LogError(" po de XRGrabInteractable sur bouton");
             return;
         }
+        if(audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
 
         //valide quand joueur attrape btn 
-        grabInteractable.selectEntered.AddListener(_ => OnButtonGrabbed());
+        grabInteractable.selectEntered.AddListener(OnButtonGrabbed);
     }
 
-    private void OnButtonGrabbed()
+    private void OnButtonGrabbed(UnityEngine.XR.Interaction.Toolkit.SelectEnterEventArgs args)
     {
         if (deliverySlot == null)
         {
-            Debug.LogWarning("no delivcery slot 4 btn");
+            Debug.LogWarning("no delivery slot assigned");
+            PlayErrorSound();
             return;
         }
 
         Debug.Log("btn ok");
-
-        deliverySlot.ValidateCurrentOrder();
+        bool orderValidated = deliverySlot.ValidateCurrentOrder();
+        if (orderValidated)
+        {
+            PlaySuccessSound();
+        }
+        else
+        {
+            PlayErrorSound();
+        }
     }
+
+    private void PlaySuccessSound()
+    {
+        if (audioSource != null && successSound != null)
+        {
+            audioSource.PlayOneShot(successSound);
+        }
+        else
+        {
+            Debug.LogWarning("audiosource/successsound po la");
+        }
+    }
+    private void PlayErrorSound()
+    {
+        if (audioSource != null && errorSound != null)
+        {
+            audioSource.PlayOneShot(errorSound);
+        }
+        else
+        {
+            Debug.LogWarning("audiosource/errorsound po la");
+        }
+    }
+    private void OnDestroy()
+    {
+        if (grabInteractable != null)
+        {
+            grabInteractable.selectEntered.RemoveListener(OnButtonGrabbed);
+        }
+    }
+
 }
