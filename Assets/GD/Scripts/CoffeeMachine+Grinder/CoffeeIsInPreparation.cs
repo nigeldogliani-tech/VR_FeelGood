@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 
 
@@ -13,29 +14,17 @@ public class CoffeeIsInPreparation : MonoBehaviour
     {
         Debug.Log("onegai faites que ça marche");
         yield return new WaitForSeconds(5f);
-        foreach (Collider collider in rbLever.GetComponentsInChildren<Collider>(false))
-        {
-            rbLever.GetComponentInChildren<Collider>().enabled = true;
-        }
-        foreach (Collider collider in rbFilter.GetComponentsInChildren<Collider>(false))
-        {
-            rbFilter.GetComponentInChildren<Collider>().enabled = true;
-        }
-        rbCup.GetComponent<Collider>().enabled = true;
+        rbLever.GetComponentInChildren<InteractableObject>().enabled = true;
+        rbFilter.GetComponentInChildren<XRGrabInteractable>().enabled = true;
+        rbCup.GetComponent<InteractableObject>().enabled = true;
         Debug.Log("Svp faites que ça marche");
     }
     public void DesableRigidbodyOfCupLeverAndFilter()
     {
         Debug.Log("Svp dites moi que ça marche");
-        foreach (Collider collider in rbLever.GetComponentsInChildren<Collider>(true))
-        {
-            rbLever.GetComponentInChildren<Collider>().enabled = false;
-        }
-        foreach (Collider collider in rbFilter.GetComponentsInChildren<Collider>(true))
-        {
-            rbFilter.GetComponentInChildren<Collider>().enabled = false;
-        }
-        rbCup.GetComponent<Collider>().enabled = false;
+        rbLever.GetComponentInChildren<InteractableObject>().enabled = false;
+        rbFilter.GetComponentInChildren<XRGrabInteractable>().enabled = false;
+        rbCup.GetComponent<InteractableObject>().enabled = false;
         StartCoroutine(DelayToMakeCoffee());
         Debug.Log("Svp je veux que ça marche");
     }
