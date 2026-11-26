@@ -197,8 +197,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerManager
   customerPrefab: {fileID: 8311029275887144401, guid: 771e0e645f7cddd46b2d79b67c2134cc, type: 3}
-  minCustomers: 5
-  maxCustomers: 12
+  minCustomers: 3
+  maxCustomers: 5
   spawnCheckInterval: 0.25
   spawnInterval: 2
   drinkSelector: {fileID: 163960077}

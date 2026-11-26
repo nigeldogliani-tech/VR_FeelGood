@@ -45,7 +45,7 @@ public class CustomerManager : MonoBehaviour
             return;
         }
 
-        if (drinkSelector != null || spawnPointManager == null)
+        if (drinkSelector == null || spawnPointManager == null)
         {
             Debug.LogError("managers po la");
             return;
