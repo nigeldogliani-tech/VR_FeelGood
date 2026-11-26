@@ -328,6 +328,7 @@ GameObject:
   - component: {fileID: 4500506024448969556}
   - component: {fileID: 4593231623693993917}
   - component: {fileID: 8299992715564026300}
+  - component: {fileID: 8779928031569964462}
   m_Layer: 0
   m_Name: Customer
   m_TagString: Untagged
@@ -444,3 +445,19 @@ MonoBehaviour:
   orderID: 
   requestedDrinkID: 
   orderText: {fileID: 4883046001062188489}
+--- !u!114 &8779928031569964462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8311029275887144401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fb429894b60a1d4c805c8920ea5ae4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerInteraction
+  bubbleRenderer: {fileID: 0}
+  receivedDrinkColor: {r: 0.09505865, g: 0.6377357, b: 0.09505865, a: 0.45882353}
+  minConsumptionTime: 3
+  maxConsumptionTime: 8

@@ -45,15 +45,21 @@ public class CustomerManager : MonoBehaviour
             return;
         }
 
-        if (drinkSelector != null && spawnPointManager == null)
+        if (drinkSelector != null || spawnPointManager == null)
         {
+            Debug.LogError("managers po la");
+            return;
+        }
+
+        if (customerPrefab == null)
+        {
+            Debug.LogError("custoprefab po assigné");
             return;
         }
 
         dayActive = true;
 
         totalCustomersToday = Random.Range(minCustomers,maxCustomers + 1);
-
         spawnedCustomers = 0;
         drinkSelector.ResetSelector();
         Debug.Log("Nb clients 2day : " + totalCustomersToday);
@@ -69,12 +75,7 @@ public class CustomerManager : MonoBehaviour
 
         Debug.Log("Fin de journée : arrêt des apparitions de clients.");
     }
-
-    //apparitions
-
-
-
-    private IEnumerator SpawnCustomersRoutine()
+    private IEnumerator SpawnCustomersRoutine()//apparitions
     {
         while (spawnedCustomers < totalCustomersToday && dayActive)
         {
@@ -94,119 +95,111 @@ public class CustomerManager : MonoBehaviour
 
         Debug.Log("Tous les clients prévus ont été créés.");
     }
-
-
-
-
-    //svp apparaissez
-    private void TrySpawnCustomer()
+    private void TrySpawnCustomer()//svp apparaissez
     {
-        if (customerPrefab == null)
+
+        if(customerPrefab == null)
         {
-            Debug.LogWarning("Customer Prefab po assigné");
+            Debug.LogWarning("Customer Prefab non assigné !");
             return;
         }
-
-        int availablePoint = spawnPointManager.GetFreeSpawnPoint();//sp dispo 
-
-        // po spawnppint dispo
-        if (availablePoint == -1)
-        {
-            Debug.Log("All SpawnPoints occupied");
-            return;
-        }
-
-        string randomDrink = drinkSelector.ChooseRandomDrink();// alea boisson
-
-        if (randomDrink == null)
+        
+        int availablePoint = spawnPointManager.GetFreeSpawnPoint();//sp dispo
+        if (availablePoint == -1)// po spawnppint dispo
         {
             return;
         }
-
+        
         Transform spawnPoint = spawnPointManager.GetSpawnPoint(availablePoint);
         if (spawnPoint == null)
         {
             return;
         }
+        
+        string randomDrink = drinkSelector.ChooseRandomDrink();// alea boisson
+        if (randomDrink == null)
+        {
+            return;
+        }
 
-        GameObject newCustomer = Instantiate(customerPrefab,spawnPoint.position,spawnPoint.rotation);//instance prefab au sp
-        Customer customer = newCustomer.GetComponent<Customer>();//et ici c'est son script 
+        if (!spawnPointManager.OccupySpawnPoint(availablePoint))
+        {
+            return;
+        }
 
+        GameObject newCustomer = Instantiate(customerPrefab, spawnPoint.position, spawnPoint.rotation);//instance prefab au sp
+        Customer customer = newCustomer.GetComponent<Customer>();//et ici c'est son script
         if (customer == null)
         {
             Debug.LogError("Prefab n'a pas de script Customer");
+            spawnPointManager.ReleaseSpawnPoint(availablePoint);
             Destroy(newCustomer);
             return;
         }
 
         string orderID = "ORDER_" + nextOrderID;//toujours l'id des commandes , chacun des clients en a un diff
-
         nextOrderID++;
 
-        customer.Initialize(randomDrink,orderID,this,availablePoint);
-
-        if (!spawnPointManager.OccupySpawnPoint(availablePoint))
+        customer.Initialize(randomDrink, orderID, this, availablePoint);
+        CustomerInteraction interaction = newCustomer.GetComponent<CustomerInteraction>();
+        if (interaction != null)
         {
-            Destroy(new Customer());
-            return;
+            interaction.SetDrinkBubble(randomDrink);
+        }
+        else
+        {
+            Debug.LogError("custointer po dans prefab");
         }
 
-
         drinkSelector.RegisterDrink(randomDrink);
-
         activeCustomers.Add(customer);
-
         spawnedCustomers++;
-
-        Debug.Log("Nouveau client : " + orderID +" | Boisson : " + randomDrink);
+        Debug.Log("Nouveau client : " + orderID + " | Boisson : " + randomDrink);
     }
 
     public void ReleaseSpawnPoint(int index)
     {
-        spawnPointManager.ReleaseSpawnPoint(index);
+        if(spawnPointManager != null)
+        {
+            spawnPointManager.ReleaseSpawnPoint(index);
+        }
     }
-
-    // client enlevé de la liste 
-    public void RemoveCustomer(Customer customer)
+    public void RemoveCustomer(Customer customer)// client enlevé de la liste 
     {
         activeCustomers.Remove(customer);
     }
-
-    // qui veut quoi ?
-
-
-    public bool TryValidateOrder(string drinkID)
+    public bool TryValidateOrder(string drinkID, GameObject drinkVisual = null)// qui veut quoi ?
     {
-        Customer matchingCustomer = null;
-
-        // qui veut la boisson
-        foreach (Customer customer in activeCustomers)
+        foreach (Customer customer in activeCustomers)// qui veut la boisson
         {
             if (customer == null)
             {
                 continue;
             }
 
-            if (customer.requestedDrinkID == drinkID)
+            if (customer.requestedDrinkID != drinkID)
             {
-                matchingCustomer = customer;
-                break;
+                continue;
             }
+
+            CustomerInteraction interaction = customer.GetComponent<CustomerInteraction>();
+
+            if (interaction == null)
+            {
+                Debug.LogError("pas de custointerac sur client");
+                return false;
+            }
+
+            bool received = interaction.ReceiveDrink(drinkVisual);
+            if (!received)
+            {
+                return false;
+            }
+            Debug.Log("Commande reçut : " + customer.orderID);
+            return true;
+
         }
-
-        // personne la veut...
-        if (matchingCustomer == null)
-        {
-            Debug.Log( "tié pas invité : " + drinkID);
-
-            return false;
-        }
-
-        Debug.Log("Commande validée : " + matchingCustomer.orderID);
-
-        // Validation en dehors du foreach
-        matchingCustomer.CompleteOrder();
-
-        return true;
+        Debug.Log("tié pas invité : " + drinkID);
+        return false;
     }
 }

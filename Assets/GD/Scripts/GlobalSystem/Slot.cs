@@ -134,18 +134,8 @@ public class Slot : MonoBehaviour
             return false;
         }
 
-        // Ajoute un point si la commande est validée.
-        if (ScoreManager.Instance != null)
-        {
-            ScoreManager.Instance.AddPoint();
-        }
-        else
-        {
-            Debug.LogWarning("ScoreManager introuvable !");
-        }
-
-        //essaye de valider 
-        bool orderValidated = customerManager.TryValidateOrder(currentObject.itemID);
+        InteractableObject deliveredObject = currentObject;//ref boisson 
+        bool orderValidated = customerManager.TryValidateOrder(deliveredObject.itemID,deliveredObject.gameObject);//essaye de valider
 
         if (!orderValidated)
         {
@@ -153,16 +143,9 @@ public class Slot : MonoBehaviour
             return false;
         }
 
-        Debug.Log("Boisson consommée : " + currentObject.itemID);
-
-        //memorise boisson avant de free slot 
-        InteractableObject deliveredObject = currentObject;
+        Debug.Log("drink consommée : " + deliveredObject.itemID);
 
         ClearSlot(deliveredObject);
-
-        //bye bye boisson
-        Destroy(deliveredObject.gameObject);
-
         return true;
     }
 

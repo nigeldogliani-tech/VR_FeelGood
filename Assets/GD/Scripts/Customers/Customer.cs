@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 
 public class Customer : MonoBehaviour
 {
@@ -7,71 +6,23 @@ public class Customer : MonoBehaviour
     public string orderID;
     public string requestedDrinkID;
 
-    [Header("Order Bubble")]
-    [SerializeField] private TMP_Text orderText;
-
     private CustomerManager customerManager;
-
     private int spawnPointIndex;
-
-    // clients + demande
-    public void Initialize( string drinkID,string newOrderID, CustomerManager manager,int pointIndex)
+    public void Initialize( string drinkID,string newOrderID, CustomerManager manager,int pointIndex)// clients + demande
     {
         requestedDrinkID = drinkID;
-
         orderID = newOrderID;
-
         customerManager = manager;
-
         spawnPointIndex = pointIndex;
-
-        UpdateOrderBubble();
     }
-
-    // affiche commande
-    private void UpdateOrderBubble()
-    {
-        if (orderText == null)
-        {
-            Debug.LogWarning("OrderTxt po assigné !");
-            return;
-        }
-
-        switch (requestedDrinkID)
-        {
-            case "coffee":
-                orderText.text = "Café";
-                break;
-
-            case "cappu":
-                orderText.text = "Cappuccino";
-                break;
-
-            case "choco":
-                orderText.text = "Chocolat chaud";
-                break;
-
-            case "tea":
-                orderText.text = "Thé";
-                break;
-
-            default:
-                orderText.text = "tié ki";
-                break;
-        }
-    }
-
-    // plu commande bye bye client
-    public void CompleteOrder()
+    public void CompleteOrder()// plu commande bye bye client
     {
         Debug.Log("Client servi : " + orderID);
-
-        // retire client liste
-        customerManager.RemoveCustomer(this);
-
-        // libère sp
-        customerManager.ReleaseSpawnPoint(spawnPointIndex);
-
+        if(customerManager != null)
+        {
+            customerManager.RemoveCustomer(this);// retire client liste
+            customerManager.ReleaseSpawnPoint(spawnPointIndex);// libère sp
+        }
         // client
         Destroy(gameObject);
     }
