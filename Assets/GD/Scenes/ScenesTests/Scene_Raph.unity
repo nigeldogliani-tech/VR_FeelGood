@@ -160,6 +160,8 @@ GameObject:
   m_Component:
   - component: {fileID: 163960074}
   - component: {fileID: 163960075}
+  - component: {fileID: 163960077}
+  - component: {fileID: 163960076}
   m_Layer: 0
   m_Name: CustomerManager
   m_TagString: Untagged
@@ -195,16 +197,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerManager
   customerPrefab: {fileID: 8311029275887144401, guid: 771e0e645f7cddd46b2d79b67c2134cc, type: 3}
+  minCustomers: 5
+  maxCustomers: 12
+  spawnCheckInterval: 0.25
+  spawnInterval: 2
+  drinkSelector: {fileID: 163960077}
+  spawnPointManager: {fileID: 163960076}
+--- !u!114 &163960076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163960073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d474ba152e74b4f84659332521b2a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnPointManager
   spawnPoints:
   - {fileID: 1244745592}
   - {fileID: 684198629}
   - {fileID: 1572055092}
   - {fileID: 723317751}
   - {fileID: 1283838930}
-  minCustomers: 5
-  maxCustomers: 12
-  spawnCheckInterval: 0.25
-  spawnInterval: 2
+--- !u!114 &163960077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163960073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 969e18c3bec01cb49a89b8bbe09c6e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrinkSelector
   availableDrinks:
   - coffee
   - cappu
@@ -501,6 +529,7 @@ MonoBehaviour:
   snapPoint: {fileID: 1199989193}
   isDeliverySlot: 0
   customerManager: {fileID: 0}
+  coffeeIsInPreparation: {fileID: 0}
 --- !u!65 &506450990
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3097,6 +3126,7 @@ MonoBehaviour:
   snapPoint: {fileID: 393637547}
   isDeliverySlot: 0
   customerManager: {fileID: 0}
+  coffeeIsInPreparation: {fileID: 0}
 --- !u!1 &1035886023
 GameObject:
   m_ObjectHideFlags: 0
@@ -4391,6 +4421,7 @@ MonoBehaviour:
   snapPoint: {fileID: 378331096}
   isDeliverySlot: 0
   customerManager: {fileID: 0}
+  coffeeIsInPreparation: {fileID: 0}
 --- !u!65 &1172181101
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7402,6 +7433,7 @@ MonoBehaviour:
   snapPoint: {fileID: 1035886024}
   isDeliverySlot: 0
   customerManager: {fileID: 0}
+  coffeeIsInPreparation: {fileID: 0}
 --- !u!65 &1917505083
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8047,6 +8079,7 @@ MonoBehaviour:
   snapPoint: {fileID: 1732487902}
   isDeliverySlot: 0
   customerManager: {fileID: 0}
+  coffeeIsInPreparation: {fileID: 0}
 --- !u!65 &2051745644
 BoxCollider:
   m_ObjectHideFlags: 0
