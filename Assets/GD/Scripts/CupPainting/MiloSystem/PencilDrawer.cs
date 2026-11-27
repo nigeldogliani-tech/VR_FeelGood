@@ -3,105 +3,105 @@ using UnityEngine;
 public class PencilDrawer : MonoBehaviour
 {
     [Header("Drawing")]
-    public float drawingDistance = 0.2f;
+    [SerializeField] private Transform tip;
+    [SerializeField] private float tipLocalOffset = 1f;
+    [Min(0f)] public float drawingDistance = 0.004f;
+    [SerializeField, Min(0f)] private float penetrationTolerance = 0.008f;
 
     [Header("Laser")]
     public LineRenderer laser;
 
-    private Vector2 previousUV;
     private CupTexturePainter previousPainter;
-    private bool wasDrawing = false;
+    private CupTexturePainter.Contact previousContact;
+    private Vector3 previousLocalTip;
+    private Vector3 previousLocalDirection;
 
-    void Start()
+    private void Start()
     {
+        if (laser == null)
+            return;
+
+        laser.positionCount = 2;
+        laser.useWorldSpace = true;
+        laser.startWidth = 0.003f;
+        laser.endWidth = 0.003f;
+    }
+
+    private void LateUpdate()
+    {
+        if (tip == null)
+            return;
+
+        Vector3 point = tip.TransformPoint(Vector3.up * tipLocalOffset);
+        Vector3 direction = tip.up;
+        Ray ray = MakeContactRay(point, direction);
+        float range = penetrationTolerance + drawingDistance;
+        Vector3 end = point + direction * drawingDistance;
+
+        float hitDistance = range;
+        if (CupTexturePainter.FindContact(ray, ref hitDistance, out var painter, out var contact))
+        {
+            ContinueStroke(painter, contact, point, direction, range);
+            end = ray.GetPoint(hitDistance);
+        }
+        else
+        {
+            previousPainter = null;
+        }
+
         if (laser != null)
         {
-            laser.positionCount = 2;
-            laser.useWorldSpace = true;
-            laser.startWidth = 0.003f;
-            laser.endWidth = 0.003f;
+            laser.SetPosition(0, point);
+            laser.SetPosition(1, end);
         }
     }
 
-    void Update()
+    private void OnDisable()
     {
-        Vector3 start = transform.position;
-        Vector3 direction = transform.up;
+        previousPainter = null;
+    }
 
-        Vector3 end = start + direction * drawingDistance;
+    private Ray MakeContactRay(Vector3 point, Vector3 direction)
+    {
+        return new Ray(point - direction * penetrationTolerance, direction);
+    }
 
-        Ray ray = new Ray(start, direction);
-
-        RaycastHit hit;
-
-        bool isDrawing = false;
-
-        if (Physics.Raycast(ray, out hit, drawingDistance))
+    private void ContinueStroke(CupTexturePainter painter, CupTexturePainter.Contact contact,
+        Vector3 point, Vector3 direction, float range)
+    {
+        Transform surface = painter.transform;
+        CupTexturePainter.Contact? last = null;
+        if (previousPainter == painter)
         {
-            // Recherche du système de dessin
-            CupTexturePainter painter =
-    hit.collider.GetComponent<CupTexturePainter>();
-
-            Debug.Log("Objet touché : " + hit.collider.name);
-            Debug.Log("Painter trouvé : " + (painter != null));
-
-            if (painter != null)
+            Vector3 start = surface.TransformPoint(previousLocalTip);
+            Vector3 startDirection = surface.TransformDirection(previousLocalDirection);
+            float distance = Vector3.Distance(start, point);
+            int steps = Mathf.Clamp(Mathf.CeilToInt(distance / 0.001f), 1, 64);
+            last = previousContact;
+            for (int i = 1; i < steps; i++)
             {
-                Debug.Log("Painter sur : " + painter.gameObject.name);
-            }
-
-            if (painter == null)
-            {
-                painter = hit.collider.GetComponentInChildren<CupTexturePainter>();
-            }
-
-            Debug.Log("Painter trouvé : " + (painter != null));
-
-            if (painter != null)
-            {
-                Debug.Log("Painter situé sur : " + painter.gameObject.name);
-            }
-
-            if (painter != null && hit.collider is MeshCollider)
-{
-                Vector2 currentUV = hit.textureCoord;
-
-                painter.brushColor = Color.red;
-
-                // Si on dessine déjà sur cette tasse
-                if (wasDrawing && previousPainter == painter)
+                float t = (float)i / steps;
+                Vector3 sampleDirection = Vector3.Slerp(startDirection, direction, t);
+                Ray sample = MakeContactRay(Vector3.Lerp(start, point, t), sampleDirection);
+                float sampleRange = range;
+                if (CupTexturePainter.FindContact(sample, ref sampleRange, out var samplePainter, out var sampleContact)
+                    && samplePainter == painter)
                 {
-                    painter.PaintLine(previousUV, currentUV);
+                    painter.Draw(last, sampleContact);
+                    last = sampleContact;
                 }
                 else
                 {
-                    painter.PaintAt(currentUV);
+                    last = null;
                 }
-
-                // Sauvegarde de la position
-                previousUV = currentUV;
-                previousPainter = painter;
-
-                end = hit.point;
-                isDrawing = true;
-                wasDrawing = true;
             }
         }
 
-        if (!isDrawing)
-        {
-            previousPainter = null;
-            wasDrawing = false;
-        }
-
-        // Affichage du laser
-        if (laser != null)
-        {
-            laser.SetPosition(0, start);
-            laser.SetPosition(1, end);
-        }
-
-
-
+        painter.Draw(last, contact);
+        painter.ApplyStroke();
+        previousPainter = painter;
+        previousContact = contact;
+        previousLocalTip = surface.InverseTransformPoint(point);
+        previousLocalDirection = surface.InverseTransformDirection(direction);
     }
 }

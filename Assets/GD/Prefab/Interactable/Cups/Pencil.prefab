@@ -290,8 +290,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c28dd120b9f655b43a88fbe800a87504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PencilDrawer
-  drawingDistance: 0.2
-  laser: {fileID: 292137155027608773}
+  tip: {fileID: 8151412675982906070}
+  tipLocalOffset: 1
+  drawingDistance: 0.004
+  penetrationTolerance: 0.008
+  laser: {fileID: 0}
 --- !u!1 &3259648670308740928
 GameObject:
   m_ObjectHideFlags: 0

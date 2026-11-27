@@ -452,6 +452,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1059074264012266857, guid: 10c6ac55ff1828a48b03fcf1e30f84c0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b1091a3ab06b640c7943b265daf70060, type: 2}
     - target: {fileID: 1677445701221096019, guid: 10c6ac55ff1828a48b03fcf1e30f84c0, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.57317
@@ -504,10 +508,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2441063624892731567, guid: 10c6ac55ff1828a48b03fcf1e30f84c0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b1091a3ab06b640c7943b265daf70060, type: 2}
     - target: {fileID: 3112005693212434400, guid: 10c6ac55ff1828a48b03fcf1e30f84c0, type: 3}
       propertyPath: m_Name
       value: Cup
       objectReference: {fileID: 0}
+    - target: {fileID: 4121803102702746575, guid: 10c6ac55ff1828a48b03fcf1e30f84c0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b1091a3ab06b640c7943b265daf70060, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -1436,6 +1448,7 @@ GameObject:
   - component: {fileID: 594970009}
   - component: {fileID: 594970014}
   - component: {fileID: 594970015}
+  - component: {fileID: 594970016}
   m_Layer: 0
   m_Name: Pencil
   m_TagString: Untagged
@@ -1699,6 +1712,23 @@ MonoBehaviour:
   m_MaxAngularVelocityDelta: 20
   itemID: 
   isFinalDrink: 0
+--- !u!114 &594970016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594970008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c28dd120b9f655b43a88fbe800a87504, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PencilDrawer
+  tip: {fileID: 1908790462}
+  tipLocalOffset: 1
+  drawingDistance: 0.004
+  penetrationTolerance: 0.008
+  laser: {fileID: 0}
 --- !u!4 &596824692 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1677445701221096019, guid: 10c6ac55ff1828a48b03fcf1e30f84c0, type: 3}
