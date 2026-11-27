@@ -10,6 +10,7 @@ public class PencilDrawer : MonoBehaviour
 
     private Vector2 previousUV;
     private CupTexturePainter previousPainter;
+    private bool wasDrawing = false;
 
     void Start()
     {
@@ -38,8 +39,8 @@ public class PencilDrawer : MonoBehaviour
         if (Physics.Raycast(ray, out hit, drawingDistance))
         {
             // Recherche du système de dessin
-            CubeTexturePainter painter =
-    hit.collider.GetComponent<CubeTexturePainter>();
+            CupTexturePainter painter =
+    hit.collider.GetComponent<CupTexturePainter>();
 
             Debug.Log("Objet touché : " + hit.collider.name);
             Debug.Log("Painter trouvé : " + (painter != null));
@@ -51,7 +52,7 @@ public class PencilDrawer : MonoBehaviour
 
             if (painter == null)
             {
-                painter = hit.collider.GetComponentInChildren<CubeTexturePainter>();
+                painter = hit.collider.GetComponentInChildren<CupTexturePainter>();
             }
 
             Debug.Log("Painter trouvé : " + (painter != null));
@@ -65,21 +66,32 @@ public class PencilDrawer : MonoBehaviour
 {
                 Vector2 currentUV = hit.textureCoord;
 
-                Debug.Log("TASSE DETECTEE !");
-                Debug.Log("UV : " + currentUV);
-                Debug.Log("PAINTER : " + painter.name);
-
                 painter.brushColor = Color.red;
-                painter.PaintAt(currentUV);
+
+                // Si on dessine déjà sur cette tasse
+                if (wasDrawing && previousPainter == painter)
+                {
+                    painter.PaintLine(previousUV, currentUV);
+                }
+                else
+                {
+                    painter.PaintAt(currentUV);
+                }
+
+                // Sauvegarde de la position
+                previousUV = currentUV;
+                previousPainter = painter;
 
                 end = hit.point;
                 isDrawing = true;
+                wasDrawing = true;
             }
         }
 
         if (!isDrawing)
         {
             previousPainter = null;
+            wasDrawing = false;
         }
 
         // Affichage du laser
@@ -88,5 +100,8 @@ public class PencilDrawer : MonoBehaviour
             laser.SetPosition(0, start);
             laser.SetPosition(1, end);
         }
+
+
+
     }
 }

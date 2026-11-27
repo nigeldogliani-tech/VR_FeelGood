@@ -15,54 +15,26 @@ public class CupTexturePainter : MonoBehaviour
 
     void Start()
     {
-        // Récupération du Renderer
-        cupRenderer = GetComponent<Renderer>();
-
+        cupRenderer = GetComponentInChildren<Renderer>();
         if (cupRenderer == null)
         {
             Debug.LogError("Aucun Renderer trouvé sur " + gameObject.name);
             return;
         }
 
-        // Vérification des UV du mesh
-        MeshCollider meshCollider = GetComponent<MeshCollider>();
-
-        if (meshCollider.sharedMesh == null ||
-            meshCollider.sharedMesh.uv.Length == 0)
-        {
-            Debug.LogError("Le mesh de la tasse ne possède pas de coordonnées UV !");
-            return;
-        }
-
-        // Création de la texture
-        drawingTexture = new Texture2D(
-            textureSize,
-            textureSize,
-            TextureFormat.RGBA32,
-            false
-        );
-
+        drawingTexture = new Texture2D(textureSize, textureSize, TextureFormat.RGBA32, false);
         drawingTexture.filterMode = FilterMode.Bilinear;
         drawingTexture.wrapMode = TextureWrapMode.Clamp;
 
-        // Initialisation en blanc
         Color[] pixels = new Color[textureSize * textureSize];
-
-        for (int i = 0; i < pixels.Length; i++)
-        {
-            pixels[i] = Color.white;
-        }
-
+        for (int i = 0; i < pixels.Length; i++) pixels[i] = Color.white;
         drawingTexture.SetPixels(pixels);
         drawingTexture.Apply();
 
-        // Application sur le matériau
         foreach (Material mat in cupRenderer.materials)
         {
-            if (mat.HasProperty("_BaseMap"))
-                mat.SetTexture("_BaseMap", drawingTexture);
-            else if (mat.HasProperty("_MainTex"))
-                mat.SetTexture("_MainTex", drawingTexture);
+            if (mat.HasProperty("_BaseMap")) mat.SetTexture("_BaseMap", drawingTexture);
+            if (mat.HasProperty("_MainTex")) mat.SetTexture("_MainTex", drawingTexture);
         }
     }
 
