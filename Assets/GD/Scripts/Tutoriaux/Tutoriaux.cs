@@ -13,9 +13,17 @@ public class Tutoriaux : MonoBehaviour
     private Coroutine movement;
     private GameObject currentObject;
     private float t = 0f;
+
+    //positions pour le manche
     [SerializeField] private Transform crankMachinePosition;
     [SerializeField] private Transform stampedTimePosition;
     [SerializeField] private Transform coffeeTimePosition;
+
+    //positions pour le tamper
+    [SerializeField] private Transform TamperPosition;
+
+    //positions pour la tasse
+    [SerializeField] private Transform cupFillPosition;
 
     private bool doOnce;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -103,19 +111,34 @@ public class Tutoriaux : MonoBehaviour
                     if (makeCoffee.isEmpty == true)
                     {
                         pointEnd = crankMachinePosition;
-                        createTutorial();
                     }
                     else if (makeCoffee.isEmpty == false && makeCoffee.isTamped == false)
                     {
                         pointEnd = stampedTimePosition;
-                        createTutorial();
                     }
                     else if (makeCoffee.isEmpty == false && makeCoffee.isTamped == true)
                     {
                         pointEnd = coffeeTimePosition;
+                    }
+                    createTutorial();
+                }
+                else if (objectCopie.name == "Tamper")
+                {
+                    if (makeCoffee.isEmpty == false || makeCoffee.isTamped == false)
+                    {
+                        pointEnd = TamperPosition;
                         createTutorial();
                     }
                 }
+                else if (objectCopie.name == "Cup(Clone)")
+                {
+                    if (objectCopie.GetComponent<CupState>().cupIsEmpty == true)
+                    {
+                        pointEnd = cupFillPosition;
+                    }
+                    createTutorial();
+                }
+
             }
         }
 
