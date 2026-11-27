@@ -38,30 +38,39 @@ public class PencilDrawer : MonoBehaviour
         if (Physics.Raycast(ray, out hit, drawingDistance))
         {
             // Recherche du système de dessin
-            CupTexturePainter painter =
-                hit.collider.GetComponent<CupTexturePainter>();
+            CubeTexturePainter painter =
+    hit.collider.GetComponent<CubeTexturePainter>();
+
+            Debug.Log("Objet touché : " + hit.collider.name);
+            Debug.Log("Painter trouvé : " + (painter != null));
+
+            if (painter != null)
+            {
+                Debug.Log("Painter sur : " + painter.gameObject.name);
+            }
 
             if (painter == null)
             {
-                painter = hit.collider.GetComponentInParent<CupTexturePainter>();
+                painter = hit.collider.GetComponentInChildren<CubeTexturePainter>();
+            }
+
+            Debug.Log("Painter trouvé : " + (painter != null));
+
+            if (painter != null)
+            {
+                Debug.Log("Painter situé sur : " + painter.gameObject.name);
             }
 
             if (painter != null && hit.collider is MeshCollider)
-            {
-                // Récupération des UV
+{
                 Vector2 currentUV = hit.textureCoord;
 
-                if (painter == previousPainter)
-                {
-                    painter.PaintLine(previousUV, currentUV);
-                }
-                else
-                {
-                    painter.PaintAt(currentUV);
-                }
+                Debug.Log("TASSE DETECTEE !");
+                Debug.Log("UV : " + currentUV);
+                Debug.Log("PAINTER : " + painter.name);
 
-                previousUV = currentUV;
-                previousPainter = painter;
+                painter.brushColor = Color.red;
+                painter.PaintAt(currentUV);
 
                 end = hit.point;
                 isDrawing = true;
