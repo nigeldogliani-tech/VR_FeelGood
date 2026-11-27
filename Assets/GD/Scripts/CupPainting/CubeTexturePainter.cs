@@ -41,42 +41,36 @@ public class CubeTexturePainter : MonoBehaviour
     // Draw one ink dot
     public void PaintAt(Vector2 uv)
     {
+        PaintDot(uv);
+        drawingTexture.Apply();
+    }
+
+    private void PaintDot(Vector2 uv)
+    {
         int x = Mathf.Clamp(
-            Mathf.RoundToInt(uv.x * textureSize),
+            Mathf.RoundToInt(uv.x * (textureSize - 1)),
             0, textureSize - 1
         );
 
         int y = Mathf.Clamp(
-            Mathf.RoundToInt(uv.y * textureSize),
+            Mathf.RoundToInt(uv.y * (textureSize - 1)),
             0, textureSize - 1
         );
 
-        int column = Mathf.Clamp(Mathf.FloorToInt(uv.x * 3), 0, 2);
-        int row = Mathf.Clamp(Mathf.FloorToInt(uv.y * 2), 0, 1);
-
-        int minX = Mathf.FloorToInt(column * textureSize / 3f);
-        int maxX = Mathf.CeilToInt((column + 1) * textureSize / 3f) - 1;
-
-        int minY = Mathf.FloorToInt(row * textureSize / 2f);
-        int maxY = Mathf.CeilToInt((row + 1) * textureSize / 2f) - 1;
-
-        int radiusX = Mathf.Max(1, Mathf.RoundToInt(brushSize * 2f / 3f));
-        int radiusY = brushSize;
-
-        for (int px = -radiusX; px <= radiusX; px++)
+        for (int px = -brushSize; px <= brushSize; px++)
         {
-            for (int py = -radiusY; py <= radiusY; py++)
+            for (int py = -brushSize; py <= brushSize; py++)
             {
-                float dx = (float)px / radiusX;
-                float dy = (float)py / radiusY;
+                float dx = (float)px / brushSize;
+                float dy = (float)py / brushSize;
 
                 if (dx * dx + dy * dy <= 1f)
                 {
                     int paintX = x + px;
                     int paintY = y + py;
 
-                    if (paintX >= minX && paintX <= maxX &&
-                        paintY >= minY && paintY <= maxY)
+                    if (paintX >= 0 && paintX < textureSize &&
+                        paintY >= 0 && paintY < textureSize)
                     {
                         drawingTexture.SetPixel(
                             paintX, paintY, brushColor
@@ -90,8 +84,8 @@ public class CubeTexturePainter : MonoBehaviour
     // Fill the gaps between two drawing positions
     public void PaintLine(Vector2 startUV, Vector2 endUV)
     {
-        float deltaX = (endUV.x - startUV.x) * textureSize * 3f;
-        float deltaY = (endUV.y - startUV.y) * textureSize * 2f;
+        float deltaX = (endUV.x - startUV.x) * textureSize;
+        float deltaY = (endUV.y - startUV.y) * textureSize;
 
         float distance = Mathf.Sqrt(
             deltaX * deltaX + deltaY * deltaY
@@ -106,9 +100,10 @@ public class CubeTexturePainter : MonoBehaviour
 
             Vector2 point = Vector2.Lerp(startUV, endUV, t);
 
-            PaintAt(point);
+            PaintDot(point);
         }
 
         drawingTexture.Apply();
     }
 }
+

@@ -40,10 +40,23 @@ public class PencilLaser : MonoBehaviour
         RaycastHit[] hits = Physics.RaycastAll(
             start, direction, laserDistance
         );
+        foreach (RaycastHit hit in hits)
+        {
+            Debug.Log("Le laser touche : " + hit.collider.name);
+            Debug.Log("Objet touché : " + hit.collider.name);
+            Debug.Log("MeshCollider : " + (hit.collider is MeshCollider));
+            Debug.Log("Painter : " + (hit.collider.GetComponent<CubeTexturePainter>() != null));
+            foreach (Collider col in hit.collider.transform.root.GetComponentsInChildren<Collider>())
+            {
+                Debug.Log("Collider trouvé : " + col.name + " : " + col.GetType().Name);
+            }
+        }
+
+
 
         foreach (RaycastHit hit in hits)
         {
-            // Detect a palette sphere
+            // Détection de la palette de couleurs
             PaletteColor palette = hit.collider.GetComponent<PaletteColor>();
 
             if (palette != null)
@@ -54,22 +67,53 @@ public class PencilLaser : MonoBehaviour
                 continue;
             }
 
-            // Detect the painting cube
-            BoxCollider box = hit.collider as BoxCollider;
+            // Recherche du Painter
+            CubeTexturePainter painter = hit.collider.GetComponent<CubeTexturePainter>();
 
-            if (box == null)
-                continue;
+            if (painter == null)
+                painter = hit.collider.GetComponentInParent<CubeTexturePainter>();
 
-            CubeTexturePainter painter =
-                box.GetComponent<CubeTexturePainter>();
+            if (painter == null)
+                painter = hit.collider.GetComponentInChildren<CubeTexturePainter>();
 
             if (painter == null)
                 continue;
 
-            // Apply selected colour
-            painter.brushColor = currentColor;
+            // Recherche du MeshCollider associé au Painter
+            MeshCollider meshCollider = painter.GetComponent<MeshCollider>();
 
-            Vector2 uv = GetBoxUV(box, hit);
+            if (meshCollider == null)
+                meshCollider = painter.GetComponentInChildren<MeshCollider>();
+
+            RaycastHit paintHit = hit;
+
+            // Si le rayon a touché le parent, on teste directement le MeshCollider
+            if (meshCollider != null && meshCollider != hit.collider)
+            {
+                Ray ray = new Ray(start, direction);
+
+                if (!meshCollider.Raycast(ray, out paintHit, laserDistance))
+                    continue;
+            }
+
+            // Récupération des coordonnées UV
+            Vector2 uv;
+
+            if (paintHit.collider is MeshCollider)
+            {
+                uv = paintHit.textureCoord;
+            }
+            else if (paintHit.collider is BoxCollider box)
+            {
+                uv = GetBoxUV(box, paintHit);
+            }
+            else
+            {
+                continue;
+            }
+
+            // Application de la couleur
+            painter.brushColor = currentColor;
 
             if (previousPainter == painter)
             {
@@ -83,7 +127,7 @@ public class PencilLaser : MonoBehaviour
             previousUV = uv;
             previousPainter = painter;
 
-            end = hit.point;
+            end = paintHit.point;
             hitCube = true;
 
             break;
