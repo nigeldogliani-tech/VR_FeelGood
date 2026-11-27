@@ -5,6 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 public class Tutoriaux : MonoBehaviour
 {
     [SerializeField] private WhoIsGrab ObjectGrab;
+    [SerializeField] private MakeCoffee makeCoffee;
     private GameObject objectCopie;
     public Transform pointStart;
     public Transform pointEnd;
@@ -12,6 +13,9 @@ public class Tutoriaux : MonoBehaviour
     private Coroutine movement;
     private GameObject currentObject;
     private float t = 0f;
+    [SerializeField] private Transform crankMachinePosition;
+    [SerializeField] private Transform stampedTimePosition;
+    [SerializeField] private Transform coffeeTimePosition;
 
     private bool doOnce;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -51,6 +55,35 @@ public class Tutoriaux : MonoBehaviour
             obj.transform.position = b;
         }   
     }
+
+    private void createTutorial()
+    {
+        doOnce = true;
+        currentObject = Instantiate(objectCopie, pointStart.position, Quaternion.Euler(0f, 90f, 0f));
+        for (int i = 0; i < currentObject.transform.childCount; i++)
+        {
+            GameObject child = currentObject.transform.GetChild(i).gameObject;
+            if (child != null && child.GetComponent<Renderer>() != null)
+            {
+                child.GetComponent<Renderer>().material.color = Color.white;
+                child.GetComponent<Collider>().enabled = false;
+
+            }
+        }
+        currentObject.GetComponent<Renderer>().material.color = Color.white;
+        currentObject.GetComponent<Rigidbody>().freezeRotation = true;
+        currentObject.GetComponent<Collider>().enabled = false;
+        if (currentObject.GetComponent<InteractableObject>() != false)
+        {
+            currentObject.GetComponent<InteractableObject>().enabled = false;
+        }
+        else
+        {
+            currentObject.GetComponent<XRGrabInteractable>().enabled = false;
+        }
+        movement = StartCoroutine(MoveLoop(currentObject));
+    }
+
     void Update()
     {
         objectCopie = ObjectGrab.grabbedObject;
@@ -65,32 +98,27 @@ public class Tutoriaux : MonoBehaviour
         {
             if (doOnce == false)
             {
-                doOnce = true;
-                currentObject = Instantiate(objectCopie, pointStart.position, Quaternion.Euler(0f, 90f, 0f));
-                for (int i = 0; i < currentObject.transform.childCount; i++)
+                if (objectCopie.name == "manche")
                 {
-                    GameObject child = currentObject.transform.GetChild(i).gameObject;
-                    if (child != null && child.GetComponent<Renderer>() != null)
+                    if (makeCoffee.isEmpty == true)
                     {
-                        child.GetComponent<Renderer>().material.color = Color.white;
-                        child.GetComponent<Collider>().enabled = false;
-
+                        pointEnd = crankMachinePosition;
+                        createTutorial();
+                    }
+                    else if (makeCoffee.isEmpty == false && makeCoffee.isTamped == false)
+                    {
+                        pointEnd = stampedTimePosition;
+                        createTutorial();
+                    }
+                    else if (makeCoffee.isEmpty == false && makeCoffee.isTamped == true)
+                    {
+                        pointEnd = coffeeTimePosition;
+                        createTutorial();
                     }
                 }
-                currentObject.GetComponent<Renderer>().material.color = Color.white;
-                currentObject.GetComponent<Rigidbody>().freezeRotation = true;
-                currentObject.GetComponent<Collider>().enabled = false;
-                if (currentObject.GetComponent<InteractableObject>() != false)
-                {
-                    currentObject.GetComponent<InteractableObject>().enabled = false;
-                }
-                else 
-                {
-                    currentObject.GetComponent<XRGrabInteractable>().enabled = false;
-                }
-                    movement = StartCoroutine(MoveLoop(currentObject));
             }
         }
+
         else
         {
             if (currentObject != null)
