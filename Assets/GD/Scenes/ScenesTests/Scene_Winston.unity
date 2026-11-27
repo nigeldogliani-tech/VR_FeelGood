@@ -510,7 +510,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1677445701221096019, guid: 10c6ac55ff1828a48b03fcf1e30f84c0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1522529202}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10c6ac55ff1828a48b03fcf1e30f84c0, type: 3}
 --- !u!1 &147745225
@@ -1696,6 +1699,11 @@ MonoBehaviour:
   m_MaxAngularVelocityDelta: 20
   itemID: 
   isFinalDrink: 0
+--- !u!4 &596824692 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1677445701221096019, guid: 10c6ac55ff1828a48b03fcf1e30f84c0, type: 3}
+  m_PrefabInstance: {fileID: 93222230}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &734521567
 GameObject:
   m_ObjectHideFlags: 0
@@ -4067,8 +4075,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 4
-      minScalar: 3
+      scalar: 3
+      minScalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4445,7 +4453,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 15
+    angle: 10
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 0.0001
@@ -8544,12 +8552,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1522529199}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.48, y: 0.854, z: -7.844}
-  m_LocalScale: {x: 0.04138347, y: 0.04138347, z: 0.04138347}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.01, y: 0.73930943, z: -0.04}
+  m_LocalScale: {x: 0.07220104, y: 0.072201036, z: 0.072201036}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 596824692}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1537125750
 GameObject:
@@ -10323,4 +10331,3 @@ SceneRoots:
   - {fileID: 1664698512}
   - {fileID: 147745229}
   - {fileID: 93222230}
-  - {fileID: 1522529202}
