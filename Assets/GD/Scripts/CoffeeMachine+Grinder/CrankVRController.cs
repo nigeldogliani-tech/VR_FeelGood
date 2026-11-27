@@ -63,6 +63,16 @@ public class CrankVRController : MonoBehaviour
         initialLeverRotation = rb.rotation;
         initialHingeAngle = hinge.angle;
     }
+    
+public void TriggerHaptic(float amplitude, float duration)
+{
+    XRBaseInputInteractor inputInteractor =interactor as XRBaseInputInteractor;
+
+    if (inputInteractor != null)
+    {
+        inputInteractor.SendHapticImpulse(amplitude, duration);
+    }
+}
 
     void FixedUpdate()
     {

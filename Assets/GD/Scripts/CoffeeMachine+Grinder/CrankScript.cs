@@ -6,16 +6,24 @@ public class CrankScript : MonoBehaviour
     public float activationAngle = 350f;
 
     [SerializeField] private MakeCoffee MakeCoffee;
+    [SerializeField] private CrankVRController crankVRController;
 
     [SerializeField] private AudioSource crankAudioSource;
     [SerializeField] private AudioClip crankSound;
     [SerializeField] private float movementThreshold = 0.05f;
     [SerializeField] private float stopDelay = 0.2f;
 
+    [SerializeField] private float hapticAmplitude = 0.3f;
+    [SerializeField] private float hapticDuration = 0.08f;
+    [SerializeField] private float hapticInterval = 0.12f;
+
     public float turns;
+
     private float previousAngle;
     private float totalAngle;
     private float movementTimer;
+    private float hapticTimer;
+
     void Start()
     {
         if (CrankJoint == null)
@@ -44,43 +52,18 @@ public class CrankScript : MonoBehaviour
             return;
 
         float currentAngle = CrankJoint.angle;
+
         float delta = Mathf.DeltaAngle(previousAngle, currentAngle);
+
         previousAngle = currentAngle;
 
-        if (Mathf.Abs(delta) > movementThreshold)// Détection du mouvement
-        {
-            movementTimer = stopDelay;
-
-            if (crankAudioSource != null &&// Lance le son s'il n'est pas déjà en cours
-                crankSound != null &&
-                !crankAudioSource.isPlaying)
-            {
-                crankAudioSource.Play();
-            }
-        }
-        else
-        {
-            movementTimer -= Time.deltaTime;// Petit délai avant de couper le son
-
-            if (movementTimer <= 0f)
-            {
-                if (crankAudioSource != null &&
-                    crankAudioSource.isPlaying)
-                {
-                    crankAudioSource.Stop();
-                }
-            }
-        }
-
-        totalAngle += Mathf.Abs(delta);// Comptage des rotations
+        totalAngle += Mathf.Abs(delta);// Comptage de la rotation
 
         if (totalAngle >= 360f)
         {
             totalAngle -= 360f;
 
-            if (MakeCoffee != null &&
-                MakeCoffee.isInPlaced &&
-                MakeCoffee.isEmpty)
+            if (MakeCoffee != null && MakeCoffee.isInPlaced && MakeCoffee.isEmpty)
             {
                 turns++;
 
@@ -91,10 +74,46 @@ public class CrankScript : MonoBehaviour
                     turns = 0;
                 }
             }
+
             Debug.Log("Nombre de tours : " + turns);
         }
-    }
 
+        // Détection du mouvement
+        if (Mathf.Abs(delta) > movementThreshold)
+        {
+            movementTimer = stopDelay;
+
+            // Gestion des vibrations
+            hapticTimer -= Time.deltaTime;
+
+            if (hapticTimer <= 0f)
+            {
+                if (crankVRController != null)
+                {
+                    crankVRController.TriggerHaptic(hapticAmplitude,hapticDuration);
+                }
+                hapticTimer = hapticInterval;
+            }
+            if (crankAudioSource != null && crankSound != null && !crankAudioSource.isPlaying)// Lecture du son
+            {
+                crankAudioSource.Play();
+            }
+        }
+        else
+        {
+            movementTimer -= Time.deltaTime;// Délai avant arrêt du son
+
+            if (movementTimer <= 0f)
+            {
+                if (crankAudioSource != null && crankAudioSource.isPlaying)
+                {
+                    crankAudioSource.Stop();
+                }
+
+                hapticTimer = 0f;
+            }
+        }
+    }
     private void OnDisable()
     {
         if (crankAudioSource != null &&
@@ -102,5 +121,8 @@ public class CrankScript : MonoBehaviour
         {
             crankAudioSource.Stop();
         }
+
+        hapticTimer = 0f;
+        movementTimer = 0f;
     }
 }
