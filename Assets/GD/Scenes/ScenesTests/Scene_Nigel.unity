@@ -943,6 +943,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OrderButton
   deliverySlot: {fileID: 447325463}
+  audioSource: {fileID: 0}
+  successSound: {fileID: 0}
+  errorSound: {fileID: 0}
 --- !u!114 &244731895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1948,6 +1951,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2064110504}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 180}
+--- !u!4 &700874303 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7917674758240283209, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
+  m_PrefabInstance: {fileID: 823441004}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &823441004
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2255,7 +2263,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8806329115733545877, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1953749977}
+    - targetCorrespondingSourceObject: {fileID: 1479944553216138837, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1847668243}
   m_SourcePrefab: {fileID: 100100000, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
 --- !u!1 &838382975
 GameObject:
@@ -3104,7 +3118,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1142475235}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.96, y: 0.955, z: -0.213}
   m_LocalScale: {x: 0.3, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
@@ -3114,7 +3128,7 @@ Transform:
   - {fileID: 979812106}
   - {fileID: 1109316523}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &1142475242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3367,17 +3381,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerManager
   customerPrefab: {fileID: 8311029275887144401, guid: 771e0e645f7cddd46b2d79b67c2134cc, type: 3}
-  spawnPoints:
-  - {fileID: 1801738706}
-  - {fileID: 145973621}
-  - {fileID: 92280495}
-  - {fileID: 156783070}
   minCustomers: 5
   maxCustomers: 12
   spawnCheckInterval: 0.4
   spawnInterval: 3
-  availableDrinks:
-  - coffee
+  drinkSelector: {fileID: 0}
+  spawnPointManager: {fileID: 0}
 --- !u!4 &1209817922
 Transform:
   m_ObjectHideFlags: 0
@@ -3520,7 +3529,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8135023674665499069, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4690,6 +4699,24 @@ MonoBehaviour:
   isDeliverySlot: 0
   customerManager: {fileID: 0}
   coffeeIsInPreparation: {fileID: 0}
+--- !u!1 &1847668236 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1479944553216138837, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
+  m_PrefabInstance: {fileID: 823441004}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1847668243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1847668236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f61f42ec7fb15744ca82a40d1cddce08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoIsGrab
+  grabbedObject: {fileID: 0}
 --- !u!1 &1865571418
 GameObject:
   m_ObjectHideFlags: 0
@@ -5129,6 +5156,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.9999998, z: 1}
   m_Center: {x: 0.00000005960465, y: -0.0000038146973, z: -0.00000008940698}
+--- !u!1 &1953749976 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8806329115733545877, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
+  m_PrefabInstance: {fileID: 823441004}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1953749977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953749976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc2f2da6c8a55c64e90a6bce3bd9b654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Tutoriaux
+  ObjectGrab: {fileID: 1847668243}
+  pointStart: {fileID: 700874303}
+  pointEnd: {fileID: 658375055}
+  deltaTime: 2
 --- !u!1 &1999853405
 GameObject:
   m_ObjectHideFlags: 0
@@ -5404,7 +5452,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &1999853412
 MonoBehaviour:

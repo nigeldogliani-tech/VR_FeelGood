@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class Tutoriaux : MonoBehaviour
 {
@@ -24,7 +25,13 @@ public class Tutoriaux : MonoBehaviour
         while (obj != null)
         {
             yield return Move(obj, pointStart.position, pointEnd.position);
-            //yield return Move(obj, pointEnd.position, pointStart.position);
+
+            if (obj.transform.position == pointEnd.position)
+            {
+                obj.transform.position = pointStart.position;
+                t = 0;
+            }
+                
         }
     }
 
@@ -46,19 +53,58 @@ public class Tutoriaux : MonoBehaviour
     }
     void Update()
     {
-        if (objectCopie == null && pointEnd == null && pointStart == null)
+        objectCopie = ObjectGrab.grabbedObject;
+
+        if (pointEnd == null || pointStart == null || ObjectGrab == null)
         {
             Debug.LogError("Références manquantes !");
             return;
         }
-        objectCopie = ObjectGrab.grabbedObject;
+
         if (objectCopie != null)
         {
             if (doOnce == false)
             {
-                currentObject = Instantiate(objectCopie, pointStart.position, pointStart.rotation);
                 doOnce = true;
-                movement = StartCoroutine(MoveLoop(currentObject));
+                currentObject = Instantiate(objectCopie, pointStart.position, Quaternion.Euler(0f, 90f, 0f));
+                for (int i = 0; i < currentObject.transform.childCount; i++)
+                {
+                    GameObject child = currentObject.transform.GetChild(i).gameObject;
+                    if (child != null && child.GetComponent<Renderer>() != null)
+                    {
+                        child.GetComponent<Renderer>().material.color = Color.white;
+                        child.GetComponent<Collider>().enabled = false;
+
+                    }
+                }
+                currentObject.GetComponent<Renderer>().material.color = Color.white;
+                currentObject.GetComponent<Rigidbody>().freezeRotation = true;
+                currentObject.GetComponent<Collider>().enabled = false;
+                if (currentObject.GetComponent<InteractableObject>() != false)
+                {
+                    currentObject.GetComponent<InteractableObject>().enabled = false;
+                }
+                else 
+                {
+                    currentObject.GetComponent<XRGrabInteractable>().enabled = false;
+                }
+                    movement = StartCoroutine(MoveLoop(currentObject));
+            }
+        }
+        else
+        {
+            if (currentObject != null)
+            {
+                if (movement != null)
+                {
+                    StopCoroutine(movement);
+                } 
+
+                Destroy(currentObject);
+
+                currentObject = null;
+                movement = null;
+                doOnce = false;
             }
         }
     }
