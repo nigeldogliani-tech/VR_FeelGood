@@ -24,6 +24,7 @@ public class Tutoriaux : MonoBehaviour
 
     //positions pour la tasse
     [SerializeField] private Transform cupFillPosition;
+    [SerializeField] private Transform sellPosition;
 
     private bool doOnce;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -124,7 +125,7 @@ public class Tutoriaux : MonoBehaviour
                 }
                 else if (objectCopie.name == "Tamper")
                 {
-                    if (makeCoffee.isEmpty == false || makeCoffee.isTamped == false)
+                    if (makeCoffee.isEmpty == false && makeCoffee.isTamped == false)
                     {
                         pointEnd = TamperPosition;
                         createTutorial();
@@ -135,6 +136,10 @@ public class Tutoriaux : MonoBehaviour
                     if (objectCopie.GetComponent<CupState>().cupIsEmpty == true)
                     {
                         pointEnd = cupFillPosition;
+                    }
+                    if (objectCopie.GetComponent<CupState>().cupIsEmpty == false)
+                    {
+                        pointEnd = sellPosition;
                     }
                     createTutorial();
                 }

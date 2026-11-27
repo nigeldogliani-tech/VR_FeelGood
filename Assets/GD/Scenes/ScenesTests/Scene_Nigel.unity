@@ -1635,7 +1635,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 700561391964391156, guid: 0405cb677b5cdc044a5f7518888ddcf7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 565715757}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0405cb677b5cdc044a5f7518888ddcf7, type: 3}
 --- !u!114 &447325463 stripped
@@ -1996,6 +1999,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectRecoveryZone
   recoverySlot: {fileID: 1838789915}
+--- !u!1 &565715756
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 565715757}
+  m_Layer: 0
+  m_Name: sellPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &565715757
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565715756}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1820686155}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &628581571
 GameObject:
   m_ObjectHideFlags: 0
@@ -4816,6 +4850,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1887120178}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+--- !u!4 &1820686155 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 700561391964391156, guid: 0405cb677b5cdc044a5f7518888ddcf7, type: 3}
+  m_PrefabInstance: {fileID: 447325462}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1828918707
 GameObject:
   m_ObjectHideFlags: 0
@@ -5656,6 +5695,7 @@ MonoBehaviour:
   coffeeTimePosition: {fileID: 1190097184}
   TamperPosition: {fileID: 1935885769}
   cupFillPosition: {fileID: 805808561}
+  sellPosition: {fileID: 565715757}
 --- !u!1 &1999853405
 GameObject:
   m_ObjectHideFlags: 0
