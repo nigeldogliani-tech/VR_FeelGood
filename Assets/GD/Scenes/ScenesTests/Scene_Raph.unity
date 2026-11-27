@@ -2057,11 +2057,11 @@ GameObject:
   - component: {fileID: 804545738}
   - component: {fileID: 804545737}
   - component: {fileID: 804545736}
-  - component: {fileID: 804545735}
-  - component: {fileID: 804545739}
-  - component: {fileID: 804545741}
-  - component: {fileID: 804545742}
   - component: {fileID: 804545743}
+  - component: {fileID: 804545735}
+  - component: {fileID: 804545741}
+  - component: {fileID: 804545739}
+  - component: {fileID: 804545742}
   - component: {fileID: 804545744}
   m_Layer: 0
   m_Name: Sonnette
@@ -2177,6 +2177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OrderButton
   deliverySlot: {fileID: 1691713062}
+  customerManager: {fileID: 163960075}
   audioSource: {fileID: 804545744}
   successSound: {fileID: 8300000, guid: 6cb73c76cb379e34e8419a59a4970d82, type: 3}
   errorSound: {fileID: 8300000, guid: 7eb8171792ddb674781267277c5740cc, type: 3}

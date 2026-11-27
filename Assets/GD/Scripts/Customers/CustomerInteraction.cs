@@ -14,6 +14,10 @@ public class CustomerInteraction : MonoBehaviour
     [SerializeField] private SpriteRenderer bubbleBackgroundRenderer;
     [SerializeField] private SpriteRenderer drinkIconRenderer;
     [SerializeField] private Color receivedDrinkColor = Color.green;
+    [SerializeField] private Color wrongDrinkColor = Color.red;
+    [SerializeField] private float wrongDrinkDuration = 3f;
+    private Color originalBubbleColor;//revenir couleur de base
+    private Coroutine wrongDrinkCoroutine;
 
     [Header("Drink Icons")]
     [SerializeField] private DrinkBubbleIcon[] drinkIcons;
@@ -37,6 +41,11 @@ public class CustomerInteraction : MonoBehaviour
         {
             consumptionAudioSource = GetComponent<AudioSource>();
         }
+
+        if (bubbleBackgroundRenderer != null)
+        {
+            originalBubbleColor = bubbleBackgroundRenderer.color;
+        }
     }
 
     public void SetDrinkBubble(string drinkID)//sprite boisson demandée dans la bulle 
@@ -56,6 +65,30 @@ public class CustomerInteraction : MonoBehaviour
             }
         }
         Debug.LogWarning("Sprite non trouvé pour : " + drinkID);
+    }
+
+    public void ShowWrongDrinkFeedback()
+    {
+        if (drinkReceived || bubbleBackgroundRenderer == null)
+        {
+            return;
+        }
+        if (wrongDrinkCoroutine != null)
+        {
+            StopCoroutine(wrongDrinkCoroutine);
+        }
+        wrongDrinkCoroutine = StartCoroutine(WrongDrinkRoutine());
+    }
+
+    private IEnumerator WrongDrinkRoutine()
+    {
+        bubbleBackgroundRenderer.color = wrongDrinkColor;
+        yield return new WaitForSeconds(wrongDrinkDuration);
+        if (!drinkReceived)
+        {
+            bubbleBackgroundRenderer.color = originalBubbleColor;
+        }
+        wrongDrinkCoroutine = null;
     }
 
     public bool ReceiveDrink(GameObject drinkVisual)//bulle passe verte, boisson ciao +1pt 
@@ -91,7 +124,7 @@ public class CustomerInteraction : MonoBehaviour
 
         Debug.Log("Le client consomme pendant : " + consumptionTime + " secondes");
 
-         float actualDelay = Mathf.Min(soundDelay, consumptionTime);// Attend un peu avant de jouer le son
+        float actualDelay = Mathf.Min(soundDelay, consumptionTime);// Attend un peu avant de jouer le son
         yield return new WaitForSeconds(actualDelay);
 
         AudioClip selectedSound = null;

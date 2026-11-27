@@ -4,6 +4,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 public class OrderButton : MonoBehaviour
 {
     [SerializeField] private Slot deliverySlot;
+    [SerializeField] private CustomerManager customerManager;
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip successSound;
@@ -37,9 +38,9 @@ public class OrderButton : MonoBehaviour
             PlayErrorSound();
             return;
         }
-
         Debug.Log("btn ok");
         bool orderValidated = deliverySlot.ValidateCurrentOrder();
+
         if (orderValidated)
         {
             PlaySuccessSound();
@@ -47,6 +48,15 @@ public class OrderButton : MonoBehaviour
         else
         {
             PlayErrorSound();
+
+            if (customerManager != null)
+            {
+                customerManager.ShowWrongDrinkFeedback();
+            }
+            else
+            {
+                Debug.LogWarning("CustomerManager non assigné !");
+            }
         }
     }
 

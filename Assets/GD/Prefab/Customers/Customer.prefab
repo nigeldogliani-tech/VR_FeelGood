@@ -456,6 +456,8 @@ MonoBehaviour:
   bubbleBackgroundRenderer: {fileID: 2949083058063471710}
   drinkIconRenderer: {fileID: 4958737567656321345}
   receivedDrinkColor: {r: 0.46034175, g: 0.7283019, b: 0.46034175, a: 1}
+  wrongDrinkColor: {r: 0.98490566, g: 0.3549377, b: 0.3549377, a: 1}
+  wrongDrinkDuration: 3
   drinkIcons:
   - drinkID: coffee
     drinkSprite: {fileID: 21300000, guid: 47d9162db3dfa43419af4dba7b9bc1fe, type: 3}

@@ -186,3 +186,4 @@ MonoBehaviour:
   snapPoint: {fileID: 5998035110237813842}
   isDeliverySlot: 1
   customerManager: {fileID: 0}
+  coffeeIsInPreparation: {fileID: 0}

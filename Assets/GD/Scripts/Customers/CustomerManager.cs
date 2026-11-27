@@ -95,6 +95,24 @@ public class CustomerManager : MonoBehaviour
 
         Debug.Log("Tous les clients prévus ont été créés.");
     }
+
+    public void ShowWrongDrinkFeedback()
+    {
+        foreach (Customer customer in activeCustomers)
+        {
+            if (customer == null)
+            {
+                continue;
+            }
+
+            CustomerInteraction interaction = customer.GetComponent<CustomerInteraction>();
+
+            if (interaction != null)
+            {
+                interaction.ShowWrongDrinkFeedback();
+            }
+        }
+    }
     private void TrySpawnCustomer()//svp apparaissez
     {
 
